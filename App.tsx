@@ -5,6 +5,7 @@ import { Karla_400Regular, Karla_700Bold } from "@expo-google-fonts/karla";
 
 import { SignIn } from "./src/screens/SignIn";
 import { THEME } from "./src/theme/index";
+import { IsLoading } from "@components/IsLoading";
 
 
 export default function App() {
@@ -14,7 +15,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME}>
       
-      {fontsLoaded ? <SignIn /> : "componente de loading"}
+      {fontsLoaded ? <SignIn /> : <IsLoading /> }
     </NativeBaseProvider>
   );
 }
