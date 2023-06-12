@@ -12,6 +12,7 @@
     "@expo-google-fonts/karla": "^0.2.3",
     "@hookform/resolvers": "^3.1.0",
     "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
     "expo": "~48.0.15",
     "expo-font": "~11.1.1",
     "expo-status-bar": "~1.4.4",

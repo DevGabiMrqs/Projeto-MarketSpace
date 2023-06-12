@@ -7,6 +7,7 @@ type Props = IInputProps & {
     errorMessage?: string | null
 }
 
+
 export function Input({errorMessage=null, isInvalid, ...rest} : Props){ //Se o input não for inválido e não conter erros, pego o resto.
 
     const invalid = !!errorMessage || isInvalid

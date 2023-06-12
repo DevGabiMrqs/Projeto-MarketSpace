@@ -1,11 +1,16 @@
-import React from "react";
-import { VStack, Text, Center, Box} from "native-base";
+import React, { useState } from "react";
+import { VStack, Text, Center, Box, Pressable, Icon} from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { MaterialIcons } from "@expo/vector-icons";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import LogoSvg from "../assets/Logo.svg";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { useNavigation } from "@react-navigation/native";
+import { AuthNavigatorRoutesProp } from "../routes/auth.routes";
+import { useAuth } from "@hooks/useAuth"
 
 
 type FormDataProps = {
@@ -13,19 +18,40 @@ type FormDataProps = {
     password: string;
 }
 
-const schema = yup.object({
-    password: yup.string().min(6).max(30).required("Informe a senha!"),
+const signInSchema = yup.object({
     email: yup.string().required("Informe o seu e-mail!").email("E-mail inválido"),
-}).required
+    password: yup.string().required("Informe a senha!").min(6, "A senha deve ter pelo menos 6 caracteres."),
+})
+
 
 export function SignIn() {
 
     const { control, handleSubmit, formState:{ errors }} = useForm<FormDataProps>({
-        defaultValues: {
-            //email
-            //senha
-        }
+        resolver: yupResolver(signInSchema)
     });
+
+    const[show, setShow] = useState(false);
+
+
+
+    //const { signIn } = useAuth();// criar o context e traze-lo para logar
+    const navigation = useNavigation<AuthNavigatorRoutesProp>();
+
+    function goToSignUp() {
+        //navigation.navigate(signIn)
+        //fazer a rota de autenticação, se o user não estiver autenticado ir pro signUp
+    }
+
+
+
+    function handleSignIn({email, password} : FormDataProps) {
+
+        try {
+            //await signIn(email, password)
+        } catch (error) {
+            
+        }
+    }
 
     return (
         <>
@@ -71,10 +97,12 @@ export function SignIn() {
                 render={({field: { onChange, value }}) => (
                     <Input
                     placeholder="Senha"
-                    type="password"
                     onChangeText={onChange}
                     value={value}
-                    />
+                    type={show ? "text" : "password"} 
+                    InputRightElement={<Pressable onPress={() => setShow(!show)}>
+                    <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="gray.300" />
+                    </Pressable>}/>
                     )}
                     />
 
@@ -92,8 +120,11 @@ export function SignIn() {
             title="Criar uma conta"
             variante="gray.500"
             colors="gray.200"
+            onPress={goToSignUp}
             />
         </Center>
     </>
     );
 }
+
+

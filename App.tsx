@@ -4,8 +4,9 @@ import { useFonts } from "expo-font";
 import { Karla_400Regular, Karla_700Bold } from "@expo-google-fonts/karla";
 
 import { SignIn } from "./src/screens/SignIn";
+import { SignUp } from "./src/screens/SignUp";
 import { THEME } from "./src/theme/index";
-import { IsLoading } from "@components/IsLoading";
+import { IsLoading } from "./src/components/IsLoading";
 
 
 export default function App() {
