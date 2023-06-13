@@ -7,6 +7,7 @@ import LogoSvg from "../assets/Logo.svg"
 import {Photo} from "../components/Photo"
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 type FormDataProps = {
     name: string;
@@ -16,12 +17,24 @@ type FormDataProps = {
     confirmPassword: string;
 }
 
+const navigation = useNavigation();
+
 export function SignUp(){
 
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
 
-    const {control, handleSubmit } = useForm<FormDataProps>();
+    const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>();
+
+    function handleSignUp<FormDataProps>(){
+
+        try {
+    
+        } catch (error) {
+    
+        }
+
+    }
 
 
     return (
@@ -53,6 +66,7 @@ export function SignUp(){
                     type="text"
                     onChangeText={onChange}
                     value={value}
+                    errorMessage={errors.name?.message}
                     />
                 )}
                 />
@@ -66,6 +80,7 @@ export function SignUp(){
                     type="text"
                     onChangeText={onChange}
                     value={value}
+                    errorMessage={errors.email?.message}
                     />
                 )}
                 />
@@ -79,6 +94,7 @@ export function SignUp(){
                     type="text"
                     onChangeText={onChange}
                     value={value}
+                    errorMessage={errors.phone?.message}
                     />
                 )}
                 />
@@ -94,6 +110,9 @@ export function SignUp(){
                     InputRightElement={<Pressable onPress={() => setShowFirst(!showFirst)}>
                     <Icon as={<MaterialIcons name={showFirst ? "visibility" : "visibility-off"} />} size={5} mr="2" color="gray.300" />
                     </Pressable>}
+                    onChangeText={onChange}
+                    value={value}
+                    errorMessage={errors.password?.message}
                     />
                 )}
                 />
@@ -108,6 +127,9 @@ export function SignUp(){
                     InputRightElement={<Pressable onPress={() => setShowSecond(!showSecond)}>
                     <Icon as={<MaterialIcons name={showSecond ? "visibility" : "visibility-off"} />} size={5} mr="2" color="gray.300" />
                     </Pressable>}
+                    onChangeText={onChange}
+                    value={value}
+                    errorMessage={errors.confirmPassword?.message}
                     />
                 )}
                 />
@@ -118,6 +140,7 @@ export function SignUp(){
                 title="Criar"
                 variante="gray.100"
                 colors="gray.600"
+                onPress={handleSubmit(handleSignUp)} //quando der o submit vai enviar a req com o post na function handleSignUp para criar o novo usuário
                 />
 
             </Center>

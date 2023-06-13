@@ -1,12 +1,12 @@
 import React from "react";
 import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack"; //lib de react-navigation
 
-import { SignIn } from "@screens/SignIn";
-import { SignUp } from "@screens/SignUp";
+import { SignIn } from "../screens/SignIn";
+import { SignUp } from "../screens/SignUp";
 
 
 
-type AuthRoutes = {
+export type AuthRoutes = {
     signIn : undefined;
     signUp : undefined;
 }
@@ -16,7 +16,8 @@ const { Navigator, Screen } = createNativeStackNavigator<AuthRoutes>(); //criand
 export type AuthNavigatorRoutesProp = NativeStackNavigationProp<AuthRoutes>; //levo essas rotas para as telas
 
 
-export function AuthRoutes(){
+export function AuthRoutes(){ // vou passar essas rotas no index(routes) e chamá-las para termoas acesso ao signIn e o signUp
+
     return(
 
         <Navigator>

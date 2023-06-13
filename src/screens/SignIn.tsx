@@ -9,8 +9,8 @@ import LogoSvg from "../assets/Logo.svg";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
-import { AuthNavigatorRoutesProp } from "../routes/auth.routes";
-import { useAuth } from "@hooks/useAuth"
+import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
+import { useAuth } from "../hooks/useAuth"
 
 
 type FormDataProps = {
@@ -23,7 +23,6 @@ const signInSchema = yup.object({
     password: yup.string().required("Informe a senha!").min(6, "A senha deve ter pelo menos 6 caracteres."),
 })
 
-
 export function SignIn() {
 
     const { control, handleSubmit, formState:{ errors }} = useForm<FormDataProps>({
@@ -34,11 +33,11 @@ export function SignIn() {
 
 
 
-    //const { signIn } = useAuth();// criar o context e traze-lo para logar
+   //const { signIn } = useAuth();// trazendo o hook do contexto para cá
     const navigation = useNavigation<AuthNavigatorRoutesProp>();
 
     function goToSignUp() {
-        //navigation.navigate(signIn)
+        
         //fazer a rota de autenticação, se o user não estiver autenticado ir pro signUp
     }
 

@@ -3,10 +3,9 @@ import { NativeBaseProvider } from "native-base";
 import { useFonts } from "expo-font";
 import { Karla_400Regular, Karla_700Bold } from "@expo-google-fonts/karla";
 
-import { SignIn } from "./src/screens/SignIn";
-import { SignUp } from "./src/screens/SignUp";
 import { THEME } from "./src/theme/index";
 import { IsLoading } from "./src/components/IsLoading";
+import { Routes } from "../marketspace/src/routes/index";
 
 
 export default function App() {
@@ -16,7 +15,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME}>
       
-      {fontsLoaded ? <SignIn /> : <IsLoading /> }
+      {fontsLoaded ? <Routes /> : <IsLoading /> }
     </NativeBaseProvider>
   );
 }
