@@ -1,37 +1,61 @@
 import React, { useState } from "react";
 import { Box, VStack, Center, Text, ScrollView, Icon, Pressable } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons"
 import { Controller, useForm } from "react-hook-form";
+
+import { MaterialIcons } from "@expo/vector-icons"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
+import * as yup from "yup";
 
 import LogoSvg from "../assets/Logo.svg"
 import {Photo} from "../components/Photo"
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { api } from "src/services/api";
+import { SignIn } from "./SignIn";
 
 type FormDataProps = {
+    avatar: string;
     name: string;
     email: string;
-    phone: string;
-    password: string;
+    tel: string;
+    password:string;
     confirmPassword: string;
 }
 
-const navigation = useNavigation();
+const signUpSchema = yup.object ({
+    name: yup.string().required("Informe o seu nome."),
+    email: yup.string().required("Informe o seu email."),
+    tel: yup.string().required("Informa o seu telefone."),
+    password: yup.string().required("Informe a sua senha.").min(6,"Senha deve ter pelo menos 6 caracteres"),
+    confirmPassword: yup.string().required("Confirme a sua senha.").min(6,"Senha deve ter pelo menos 6 caracteres"),
+})
+
 
 export function SignUp(){
-
+    
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
-
     const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>();
+    const navigation = useNavigation();
 
-    function handleSignUp<FormDataProps>(){
+
+
+    function goBackToSignIn() {
+        navigation.goBack()
+    }
+
+
+    async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){
 
         try {
-    
+
+            const response = await api.post("/users", {avatar, name, email, tel, password});
+            console.log(response)
+
         } catch (error) {
-    
+
+            throw error;
         }
 
     }
@@ -78,6 +102,7 @@ export function SignUp(){
                     <Input 
                     placeholder="E-mail"
                     type="text"
+                    keyboardType="email-address"
                     onChangeText={onChange}
                     value={value}
                     errorMessage={errors.email?.message}
@@ -87,14 +112,15 @@ export function SignUp(){
 
                 <Controller
                 control={control}
-                name="phone"
+                name="tel"
                 render={({field: { onChange, value }}) => (
                     <Input 
                     placeholder="Telefone"
                     type="text"
+                    keyboardType="phone-pad"
                     onChangeText={onChange}
                     value={value}
-                    errorMessage={errors.phone?.message}
+                    errorMessage={errors.tel?.message}
                     />
                 )}
                 />

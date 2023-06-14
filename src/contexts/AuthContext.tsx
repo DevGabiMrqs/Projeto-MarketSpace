@@ -11,13 +11,16 @@ type AuthContextDataProps = {
 export const AuthContext = createContext<AuthContextDataProps>({} as AuthContextDataProps) //criado o contexto que será passado para o elemento filho
 
 type AuthContextProviderProps = {
-    children: ReactNode; //reactnode vai permitir eu renderizar qualqur coisa como filho do componente
+    children: ReactNode; //reactnode vai permitir eu renderizar qualquer coisa como filho do componente
 }
 
 export function AuthContextProvider({children} : AuthContextProviderProps) {
 
         const [user, setUser] = useState<userDTO>(); //não há usuário autenticado no início
 
+    function handleSignUp(){
+        
+    }
 
 
     return (
