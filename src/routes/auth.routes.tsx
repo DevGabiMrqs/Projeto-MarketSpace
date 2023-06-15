@@ -4,7 +4,7 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-na
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
 
-
+//Auth s√£o as telas de SignIn e SignUp
 
 export type AuthRoutes = {
     signIn : undefined;
@@ -20,7 +20,7 @@ export function AuthRoutes(){ // vou passar essas rotas no index(routes) e cham√
 
     return(
 
-        <Navigator>
+        <Navigator screenOptions={{headerShown: false}}>
             <Screen 
             name="signIn" 
             component={SignIn}

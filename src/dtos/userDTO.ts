@@ -1,8 +1,8 @@
-export type userDTO = {
+export type userDTO = [{
     id: string;
     name: string;
     email: string;
     password: string;
-    phone: string;
+    tel: string;
     avatar: string;
-}
+}]

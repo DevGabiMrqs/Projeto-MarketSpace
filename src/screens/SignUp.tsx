@@ -11,8 +11,8 @@ import LogoSvg from "../assets/Logo.svg"
 import {Photo} from "../components/Photo"
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { api } from "src/services/api";
-import { SignIn } from "./SignIn";
+import { api } from "../services/api";
+import { useAuth } from "../hooks/useAuth";
 
 type FormDataProps = {
     avatar: string;
@@ -36,10 +36,13 @@ export function SignUp(){
     
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
-    const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>();
+    
+    const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>({
+        resolver: yupResolver(signUpSchema)
+    });
+
+    const { signIn } = useAuth();
     const navigation = useNavigation();
-
-
 
     function goBackToSignIn() {
         navigation.goBack()
@@ -51,7 +54,6 @@ export function SignUp(){
         try {
 
             const response = await api.post("/users", {avatar, name, email, tel, password});
-            console.log(response)
 
         } catch (error) {
 
@@ -180,6 +182,7 @@ export function SignUp(){
                 title="Ir para o Login"
                 variante="gray.500"
                 colors="gray.200"
+                onPress={goBackToSignIn}
                 />
 
             </Center>

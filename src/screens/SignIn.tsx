@@ -11,6 +11,7 @@ import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth"
+import { SignUp } from "../screens/SignUp";
 
 
 type FormDataProps = {
@@ -24,22 +25,20 @@ const signInSchema = yup.object({
 })
 
 export function SignIn() {
+    
+    const[show, setShow] = useState(false);
 
     const { control, handleSubmit, formState:{ errors }} = useForm<FormDataProps>({
         resolver: yupResolver(signInSchema)
     });
 
-    const[show, setShow] = useState(false);
-
-
-
-   //const { signIn } = useAuth();// trazendo o hook do contexto para cá
+    const { signIn } = useAuth();// trazendo o hook do contexto para cá
     const navigation = useNavigation<AuthNavigatorRoutesProp>();
 
     function goToSignUp() {
-        
-        //fazer a rota de autenticação, se o user não estiver autenticado ir pro signUp
+        navigation.navigate("signUp")
     }
+    //fazer a rota de autenticação, se o user não estiver autenticado ir pro signUp
 
 
 
@@ -84,8 +83,10 @@ export function SignIn() {
                     <Input 
                     placeholder="E-mail"
                     type="text"
+                    keyboardType={"email-address"}
                     onChangeText={onChange}
                     value={value}
+                    errorMessage={errors.email?.message}
                     />
                     )}
                     />
@@ -101,14 +102,17 @@ export function SignIn() {
                     type={show ? "text" : "password"} 
                     InputRightElement={<Pressable onPress={() => setShow(!show)}>
                     <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} size={5} mr="2" color="gray.300" />
-                    </Pressable>}/>
-                    )}
+                    </Pressable>}
+                    errorMessage={errors.password?.message}
                     />
+                )}
+                />
 
                     <Button 
                     title="Entrar"
                     variante="blue.200"
                     colors="gray.700"
+                    onPress={handleSubmit(handleSignIn)}
                     />
                 </Center>
             </Center>
