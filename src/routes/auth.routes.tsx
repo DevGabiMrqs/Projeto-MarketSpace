@@ -21,6 +21,7 @@ export function AuthRoutes(){ // vou passar essas rotas no index(routes) e cham√
     return(
 
         <Navigator screenOptions={{headerShown: false}}>
+            
             <Screen 
             name="signIn" 
             component={SignIn}

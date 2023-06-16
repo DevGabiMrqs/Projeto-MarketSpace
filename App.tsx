@@ -6,6 +6,8 @@ import { Karla_400Regular, Karla_700Bold } from "@expo-google-fonts/karla";
 import { THEME } from "./src/theme/index";
 import { IsLoading } from "./src/components/IsLoading";
 import { Routes } from "../marketspace/src/routes/index";
+import { SignUp } from "../marketspace/src/screens/SignUp";
+import { SignIn } from "./src/screens/SignIn";
 
 
 export default function App() {
@@ -15,7 +17,8 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME}>
       
-      {fontsLoaded ? <Routes /> : <IsLoading /> }
+      {fontsLoaded ? <SignIn/> : <IsLoading /> }
+      
     </NativeBaseProvider>
   );
 }

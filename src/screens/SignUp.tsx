@@ -19,7 +19,7 @@ type FormDataProps = {
     name: string;
     email: string;
     tel: string;
-    password:string;
+    password: string;
     confirmPassword: string;
 }
 
@@ -45,14 +45,15 @@ export function SignUp(){
     const navigation = useNavigation();
 
     function goBackToSignIn() {
-        navigation.goBack()
+        navigation.goBack();
     }
 
 
     async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){
 
-        try {
+       
 
+        try {
             const response = await api.post("/users", {avatar, name, email, tel, password});
 
         } catch (error) {
@@ -105,6 +106,7 @@ export function SignUp(){
                     placeholder="E-mail"
                     type="text"
                     keyboardType="email-address"
+                    autoCapitalize={"none"}
                     onChangeText={onChange}
                     value={value}
                     errorMessage={errors.email?.message}
@@ -119,7 +121,7 @@ export function SignUp(){
                     <Input 
                     placeholder="Telefone"
                     type="text"
-                    keyboardType="phone-pad"
+                    keyboardType={"numeric"}
                     onChangeText={onChange}
                     value={value}
                     errorMessage={errors.tel?.message}
@@ -174,7 +176,7 @@ export function SignUp(){
             </Center>
             
             <Center pb={10}>
-                <Text pb={5}>
+                <Text pb={3}>
                     Já tem uma conta?
                 </Text>
 
