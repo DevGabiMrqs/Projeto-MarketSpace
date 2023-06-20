@@ -3,9 +3,9 @@ import { UserDTO } from "../dtos/userDTO"
 import { NavigationContainer } from "@react-navigation/native"
 
 
-type AuthContextDataProps = {
-    user: UserDTO,
-    signIn: (email: string, password: string) => Promise<void>
+export type AuthContextDataProps = {
+    user: UserDTO|undefined,
+    signIn: (email: string, password: string) => void
 }
 
 
@@ -16,20 +16,25 @@ type AuthContextProviderProps = {
 }
 
 export function AuthContextProvider({children} : AuthContextProviderProps) {
-
-        const [user, setUser] = useState<UserDTO>(); //não há usuário autenticado no início
+ //vou passar essa children com o auth no app para levar o contexto do filho pro pai
+ 
+        const [user, setUser] = useState<UserDTO>({} as UserDTO); //não há usuário autenticado no início
 
     function handleSignUp(){
         
     }
 
+    function signIn(email: string, password: string){
+        
+    }
+
 
     return (
-        // <NavigationContainer>
-        //     <AuthContext.Provider value={{}}>
-        //         {children}
-        //     </AuthContext.Provider>
-        // </NavigationContainer>
-        <></>
+            <AuthContext.Provider value={{
+                user,
+                signIn,
+            }}>
+                {children}
+            </AuthContext.Provider>
     )
 }

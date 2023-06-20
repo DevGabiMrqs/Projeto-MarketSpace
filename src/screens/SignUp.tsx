@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable } from "native-base";
+import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View } from "native-base";
 import { Controller, useForm } from "react-hook-form";
 
 import { MaterialIcons } from "@expo/vector-icons"
@@ -13,6 +13,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { api } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
+import { TouchableOpacity } from "react-native";
 
 type FormDataProps = {
     avatar: string;
@@ -36,6 +37,7 @@ export function SignUp(){
     
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
+    const[isLoading, setIsLoading] = useState(false);
     
     const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>({
         resolver: yupResolver(signUpSchema)
@@ -51,14 +53,27 @@ export function SignUp(){
 
     async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){
 
-       
-
         try {
-            const response = await api.post("/users", {avatar, name, email, tel, password});
+            setIsLoading(false)
+
+            await api.post("/users", { name, email, tel, password,
+                
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                body: {
+                    name: "teste",
+                    email: "teste@email.com",
+                    tel: "4899845487",
+                    password: "123456"
+                }
+            });
 
         } catch (error) {
 
             throw error;
+
+            setIsLoading(true);
         }
 
     }
@@ -78,9 +93,23 @@ export function SignUp(){
                     Crie sua conta e use o espaço para comprar {'\n'}
                     itens variados e vender seus produtos.
                 </Text>
-                <Box pb={14}>
-                    <Photo/>
-                </Box>
+                <View pb={14} position="relative">
+                    <Photo size={79} />
+                    <TouchableOpacity >
+                    <View>
+                    <Icon 
+                    as={MaterialIcons} 
+                    name="edit" 
+                    color="blue.200"
+                    size={22}
+                    position="absolute"
+                    bottom={1}
+                    right={-14}
+                    />
+                    </View>
+                    
+                    </TouchableOpacity>
+                </View>
 
                 <Center pb={14}>
 

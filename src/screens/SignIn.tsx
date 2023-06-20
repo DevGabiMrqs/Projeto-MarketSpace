@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth"
 import { SignUp } from "../screens/SignUp";
+import { AuthContext } from "src/contexts/AuthContext";
 
 
 type FormDataProps = {

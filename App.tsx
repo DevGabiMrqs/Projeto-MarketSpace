@@ -8,6 +8,7 @@ import { IsLoading } from "./src/components/IsLoading";
 import { Routes } from "../marketspace/src/routes/index";
 import { SignUp } from "../marketspace/src/screens/SignUp";
 import { SignIn } from "./src/screens/SignIn";
+import { AuthRoutes } from "./src/routes/auth.routes";
 
 
 export default function App() {
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME}>
       
-      {fontsLoaded ? <SignIn/> : <IsLoading /> }
+      {fontsLoaded ? <Routes/> : <IsLoading /> }
       
     </NativeBaseProvider>
   );

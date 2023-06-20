@@ -14,7 +14,6 @@ export function Routes() {
 
     return(
         <NavigationContainer> 
-            <AppRoutes/>
             <AuthRoutes/>
         </NavigationContainer> //levando as Routes para o AppTsx
     )
