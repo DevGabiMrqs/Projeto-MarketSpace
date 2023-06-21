@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Text, Center, Box, Pressable, Icon} from "native-base";
+import { VStack, Text, Center, Box, Pressable, Icon, useToast} from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -12,7 +12,9 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth"
 import { SignUp } from "../screens/SignUp";
-import { AuthContext } from "src/contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
+import { AppError } from "../utils/AppError";
+import { color } from "native-base/lib/typescript/theme/styled-system";
 
 
 type FormDataProps = {
@@ -28,7 +30,10 @@ const signInSchema = yup.object({
 export function SignIn() {
     
     const[show, setShow] = useState(false);
-
+    const[isLoading, setIsLoading] = useState(false);
+    
+    const toast = useToast();
+    
     const { control, handleSubmit, formState:{ errors }} = useForm<FormDataProps>({
         resolver: yupResolver(signInSchema)
     });
@@ -43,12 +48,24 @@ export function SignIn() {
 
 
 
-    function handleSignIn({email, password} : FormDataProps) {
+    async function handleSignIn({email, password} : FormDataProps) {
+
 
         try {
-            //await signIn(email, password)
+        
+            setIsLoading(true)
+            await signIn(email, password)
+
         } catch (error) {
             
+            const isAppError = error instanceof AppError ;
+            setIsLoading(false)
+            const title = isAppError ? error.message : "não foi possível"
+            
+            toast.show ({
+                title,
+                placement:"top"
+            })
         }
     }
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View } from "native-base";
+import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast } from "native-base";
 import { Controller, useForm } from "react-hook-form";
+import { TouchableOpacity } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 
 import { MaterialIcons } from "@expo/vector-icons"
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +15,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { api } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
-import { TouchableOpacity } from "react-native";
+import { AppError } from "../utils/AppError";
 
 type FormDataProps = {
     avatar: string;
@@ -38,10 +40,22 @@ export function SignUp(){
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
     const[isLoading, setIsLoading] = useState(false);
-    
+
+    const[photoIsLoading, setPhotoIsLoading] = useState(false)
+    const[userPhoto, setUserPhoto] = useState("http://github.com/devgabimqrs.png");
+
+    const toast = useToast();
+
+    const{ user } = useAuth();
     const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>({
+        defaultValues:{
+            name: user?.name,
+            email: user?.email,
+        },
         resolver: yupResolver(signUpSchema)
     });
+
+
 
     const { signIn } = useAuth();
     const navigation = useNavigation();
@@ -50,30 +64,90 @@ export function SignUp(){
         navigation.goBack();
     }
 
+    async function handleUserPhotoSelect(){
+        try {
+            setPhotoIsLoading(true)
 
-    async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){
+            const photoSelected = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images, // instalei a lib do ImagePicker do Expo.
+                quality: 1,
+                aspect: [4, 4],
+                allowsEditing:true
+            })
+
+            if(photoSelected.canceled){ //se o evento de foto selecionada for cancelado, retorna.
+                return;
+            }
+
+            if(photoSelected.assets[0].uri) {
+                const photoInfo = await FileSystem.caller(photoSelected.assets[0].uri)
+                
+                if(photoInfo.exists && !photoInfo.isDirectory) { //aqui estou passando a negativa, que se caso não houver essas condições a foto será escolhida.
+                    if(photoInfo.size && (photoInfo.size /1024 / 1024) > 5)
+                    return  toast.show({
+                        title: "Por favor escolha uma foto menor que 5MB.",
+                        placement: "top",
+                        bgColor: "red.500"
+                    })
+                }
+            }
+
+            const fileExtension = photoSelected.assets[0].uri.split(".").pop(); //aqui eu defino o tipo de arquivo que será informado, utizando o pop, é possível identificar o tipo se for jpg ou png por ex.
+            console.log(fileExtension);
+
+            const photoFile = {
+                name: `${user?.name}.${fileExtension}`.toLowerCase(),
+                uri: photoSelected.assets[0].uri,
+                type: "image"
+            } as any; // a foto terá o nome do usuário como default e tipo(png) e a foto em si.
+
+            const userPhotoUploadForm = new FormData();
+            userPhotoUploadForm.append('avatar', photoFile)
+            
+            //atualização de foto patch.
+
+
+        } catch (error) {
+            
+            const isAppError = error instanceof AppError;
+            setPhotoIsLoading(false)
+            const title = isAppError ? error.message : "Não foi possível carregar a foto"
+
+            toast.show({
+                title,
+                placement: "top",
+                bgColor: "red",
+            })    
+        }
+    }
+
+
+
+    async function handleSignUp({ avatar, name, email, tel, password}: FormDataProps){     
 
         try {
-            setIsLoading(false)
+        setIsLoading(false)
+        const formData = new FormData(); 
 
-            await api.post("/users", { name, email, tel, password,
-                
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                body: {
-                    name: "teste",
-                    email: "teste@email.com",
-                    tel: "4899845487",
-                    password: "123456"
-                }
-            });
+        formData.append('avatar', avatar)
+        formData.append('name', name)
+        formData.append('email', email)
+        formData.append('tel', tel)
+        formData.append('password', password)
+
+        const headers = {
+            'Content-Type': 'multipart/form-data'
+        }
+
+        const response = await api.post("/users", formData, { headers })
+        console.log(response);
+        
 
         } catch (error) {
 
-            throw error;
+             console.log(error);
 
-            setIsLoading(true);
+             setIsLoading(true);
         }
 
     }
@@ -95,16 +169,19 @@ export function SignUp(){
                 </Text>
                 <View pb={14} position="relative">
                     <Photo size={79} />
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={handleUserPhotoSelect}>
                     <View>
                     <Icon 
                     as={MaterialIcons} 
                     name="edit" 
-                    color="blue.200"
-                    size={22}
+                    fontSize="small"
+                    color="gray.700"
+                    size={28}
                     position="absolute"
                     bottom={1}
                     right={-14}
+                    bgColor="blue.200"
+                    rounded="lg"
                     />
                     </View>
                     
