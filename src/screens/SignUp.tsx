@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast } from "native-base";
+import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast, Avatar } from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { MaterialIcons } from "@expo/vector-icons"
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,9 +41,9 @@ export function SignUp(){
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
     const[isLoading, setIsLoading] = useState(false);
-
+    const[avatar, setAvatar] = useState();
     const[photoIsLoading, setPhotoIsLoading] = useState(false)
-    const[userPhoto, setUserPhoto] = useState("http://github.com/devgabimqrs.png");
+    const[userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
 
     const toast = useToast();
 
@@ -79,15 +80,19 @@ export function SignUp(){
                 return;
             }
 
+            
+
             if(photoSelected.assets[0].uri) {
-                const photoInfo = await FileSystem.caller(photoSelected.assets[0].uri)
+                setUserPhoto(photoSelected.assets[0].uri)
+                const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+
                 
                 if(photoInfo.exists && !photoInfo.isDirectory) { //aqui estou passando a negativa, que se caso não houver essas condições a foto será escolhida.
                     if(photoInfo.size && (photoInfo.size /1024 / 1024) > 5)
                     return  toast.show({
                         title: "Por favor escolha uma foto menor que 5MB.",
                         placement: "top",
-                        bgColor: "red.500"
+                        bgColor: "red.600"
                     })
                 }
             }
@@ -101,11 +106,7 @@ export function SignUp(){
                 type: "image"
             } as any; // a foto terá o nome do usuário como default e tipo(png) e a foto em si.
 
-            const userPhotoUploadForm = new FormData();
-            userPhotoUploadForm.append('avatar', photoFile)
-            
-            //atualização de foto patch.
-
+            setAvatar(photoFile)
 
         } catch (error) {
             
@@ -116,20 +117,19 @@ export function SignUp(){
             toast.show({
                 title,
                 placement: "top",
-                bgColor: "red",
             })    
         }
     }
 
+    
 
-
-    async function handleSignUp({ avatar, name, email, tel, password}: FormDataProps){     
+    async function handleSignUp({name, email, tel, password}: FormDataProps){     
 
         try {
         setIsLoading(false)
         const formData = new FormData(); 
 
-        formData.append('avatar', avatar)
+        formData.append('avatar', "")
         formData.append('name', name)
         formData.append('email', email)
         formData.append('tel', tel)
@@ -145,9 +145,17 @@ export function SignUp(){
 
         } catch (error) {
 
-             console.log(error);
+            setIsLoading(true);
 
-             setIsLoading(true);
+            const isAppError = error instanceof AppError;
+            const title = isAppError ? error.message : "Não foi possível enviar tente novamente."
+
+            toast.show({
+                title,
+                placement: "top",
+                bgColor:"red.600"
+            })
+
         }
 
     }
@@ -158,7 +166,7 @@ export function SignUp(){
         <VStack flex={1} bgColor="gray.600" >
             <Center pb={10}>
                 <Box pt={10}>
-                <LogoSvg width={60}/>
+                    <LogoSvg width={60}/>
                 </Box>
                 <Text fontFamily="heading" fontSize="lg" pb={1}>
                     Boas vindas!
@@ -168,24 +176,24 @@ export function SignUp(){
                     itens variados e vender seus produtos.
                 </Text>
                 <View pb={14} position="relative">
-                    <Photo size={79} />
-                    <TouchableOpacity onPress={handleUserPhotoSelect}>
-                    <View>
-                    <Icon 
-                    as={MaterialIcons} 
-                    name="edit" 
-                    fontSize="small"
-                    color="gray.700"
-                    size={28}
-                    position="absolute"
-                    bottom={1}
-                    right={-14}
-                    bgColor="blue.200"
-                    rounded="lg"
-                    />
-                    </View>
-                    
-                    </TouchableOpacity>
+                        <Photo size={79} source={{uri: userPhoto}} />
+                        <TouchableOpacity 
+                        onPress={handleUserPhotoSelect}>
+                            <View>
+                                <Icon 
+                                as={MaterialIcons} 
+                                name="edit" 
+                                fontSize="small"
+                                color="gray.700"
+                                size={28}
+                                position="absolute"
+                                bottom={1}
+                                right={-14}
+                                bgColor="blue.200"
+                                rounded="lg"
+                                />
+                            </View>
+                        </TouchableOpacity>
                 </View>
 
                 <Center pb={14}>
