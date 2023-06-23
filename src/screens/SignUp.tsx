@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast, Avatar } from "native-base";
+import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast} from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
@@ -123,13 +123,13 @@ export function SignUp(){
 
     
 
-    async function handleSignUp({name, email, tel, password}: FormDataProps){     
+    async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){     
 
         try {
         setIsLoading(false)
         const formData = new FormData(); 
 
-        formData.append('avatar', "")
+        formData.append('avatar', avatar)
         formData.append('name', name)
         formData.append('email', email)
         formData.append('tel', tel)
@@ -140,7 +140,7 @@ export function SignUp(){
         }
 
         const response = await api.post("/users", formData, { headers })
-        console.log(response);
+        console.log(handleSignUp);
         
 
         } catch (error) {
