@@ -10,12 +10,9 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
-import { useAuth } from "../hooks/useAuth"
-import { SignUp } from "../screens/SignUp";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { AppError } from "../utils/AppError";
-import { color } from "native-base/lib/typescript/theme/styled-system";
-
+import { ScrollView } from "react-navigation";
 
 type FormDataProps = {
     email: string;
@@ -60,7 +57,7 @@ export function SignIn() {
             
             const isAppError = error instanceof AppError ;
             setIsLoading(false)
-            const title = isAppError ? error.message : "não foi possível"
+            const title = isAppError ? error.message : "Não foi possível entrar. Tente novamente."
             
             toast.show ({
                 title,
@@ -70,7 +67,7 @@ export function SignIn() {
     }
 
     return (
-        <>
+    <ScrollView showsVerticalScrollIndicator={false}>
         <VStack px={50} bgColor="gray.600">
             <Center py={77}>
                 <Box>
@@ -144,7 +141,7 @@ export function SignIn() {
             onPress={goToSignUp}
             />
         </Center>
-    </>
+    </ScrollView>
     );
 }
 

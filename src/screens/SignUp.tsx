@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast} from "native-base";
+import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast, Alert} from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import { ImagePickerSuccessResult } from "expo-image-picker";
+import { FileInfo } from "expo-file-system";
 
 import { MaterialIcons } from "@expo/vector-icons"
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,24 +43,18 @@ export function SignUp(){
     const[showFirst, setShowFirst] = useState(false);
     const[showSecond, setShowSecond] = useState(false);
     const[isLoading, setIsLoading] = useState(false);
-    const[avatar, setAvatar] = useState();
+    const[avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult);
     const[photoIsLoading, setPhotoIsLoading] = useState(false)
     const[userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
 
-    const toast = useToast();
-
-    const{ user } = useAuth();
+    
+    const { signIn } = useAuth();
+    const { user } = useAuth();
     const {control, handleSubmit, formState : { errors } } = useForm<FormDataProps>({
-        defaultValues:{
-            name: user?.name,
-            email: user?.email,
-        },
         resolver: yupResolver(signUpSchema)
     });
-
-
-
-    const { signIn } = useAuth();
+    
+    const toast = useToast();
     const navigation = useNavigation();
 
     function goBackToSignIn() {
@@ -76,15 +72,13 @@ export function SignUp(){
                 allowsEditing:true
             })
 
-            if(photoSelected.canceled){ //se o evento de foto selecionada for cancelado, retorna.
+            if(photoSelected.canceled){ 
                 return;
             }
 
-            
-
             if(photoSelected.assets[0].uri) {
                 setUserPhoto(photoSelected.assets[0].uri)
-                const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+                const photoInfo:FileInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
 
                 
                 if(photoInfo.exists && !photoInfo.isDirectory) { //aqui estou passando a negativa, que se caso não houver essas condições a foto será escolhida.
@@ -97,16 +91,9 @@ export function SignUp(){
                 }
             }
 
-            const fileExtension = photoSelected.assets[0].uri.split(".").pop(); //aqui eu defino o tipo de arquivo que será informado, utizando o pop, é possível identificar o tipo se for jpg ou png por ex.
-            console.log(fileExtension);
+            setAvatar(photoSelected);
 
-            const photoFile = {
-                name: `${user?.name}.${fileExtension}`.toLowerCase(),
-                uri: photoSelected.assets[0].uri,
-                type: "image"
-            } as any; // a foto terá o nome do usuário como default e tipo(png) e a foto em si.
 
-            setAvatar(photoFile)
 
         } catch (error) {
             
@@ -121,48 +108,62 @@ export function SignUp(){
         }
     }
 
-    
-
-    async function handleSignUp({avatar, name, email, tel, password}: FormDataProps){     
-
+    async function handleSignUp({ name, email, tel, password}: FormDataProps){    
         try {
-        setIsLoading(false)
-        const formData = new FormData(); 
+            
+            setIsLoading(true)
+            avatar && avatar.assets && avatar.assets.length > 0
+            const fileExtension = avatar.assets[0].uri.split('.').pop();
 
-        formData.append('avatar', avatar)
+            const photoFile = {
+                name: `${name}.${fileExtension}`.toLocaleLowerCase(),
+                uri: avatar.assets[0].uri,
+                type: `${avatar.assets[0].type}/${fileExtension}`
+            } as any;
+        
+
+        setAvatar(photoFile)
+
+        
+        const formData = new FormData(); //enviando as info do user através do formulário
+        
+        formData.append('avatar', photoFile)
         formData.append('name', name)
         formData.append('email', email)
         formData.append('tel', tel)
         formData.append('password', password)
 
-        const headers = {
-            'Content-Type': 'multipart/form-data'
-        }
-
-        const response = await api.post("/users", formData, { headers })
-        console.log(handleSignUp);
+        // const headers = {
+        //     'Content-Type': 'multipart/form-data'
+        // }
         
-
-        } catch (error) {
-
-            setIsLoading(true);
-
-            const isAppError = error instanceof AppError;
-            const title = isAppError ? error.message : "Não foi possível enviar tente novamente."
-
-            toast.show({
-                title,
-                placement: "top",
-                bgColor:"red.600"
-            })
-
-        }
+        const response = await api.post("/users", formData);
+        await signIn(email, password);
+        console.log(response.data)
+        
+        
+    } catch (error) {
+        
+        console.log(error)
+        setIsLoading(true);
+        
+        const isAppError = error instanceof AppError;
+        const title = isAppError ? error.message : "Não foi possível enviar, tente novamente."
+        
+        toast.show({
+            title,
+            placement: "top",
+            bgColor:"red.600"
+        })
+        
+        
+    }
+    
 
     }
 
-
     return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+
         <VStack flex={1} bgColor="gray.600" >
             <Center pb={10}>
                 <Box pt={10}>
@@ -204,13 +205,14 @@ export function SignUp(){
                 render={({field: { onChange, value }}) => (
                     <Input 
                     placeholder="Nome"
+                    autoCapitalize="words"
                     type="text"
                     onChangeText={onChange}
                     value={value}
                     errorMessage={errors.name?.message}
                     />
-                )}
-                />
+                    )}
+                    />
 
                 <Controller
                 control={control}
@@ -225,7 +227,7 @@ export function SignUp(){
                     value={value}
                     errorMessage={errors.email?.message}
                     />
-                )}
+                    )}
                 />
 
                 <Controller
@@ -240,8 +242,8 @@ export function SignUp(){
                     value={value}
                     errorMessage={errors.tel?.message}
                     />
-                )}
-                />
+                    )}
+                    />
 
 
                 <Controller
@@ -258,7 +260,7 @@ export function SignUp(){
                     value={value}
                     errorMessage={errors.password?.message}
                     />
-                )}
+                    )}
                 />
 
                 <Controller
@@ -274,9 +276,11 @@ export function SignUp(){
                     onChangeText={onChange}
                     value={value}
                     errorMessage={errors.confirmPassword?.message}
+                    returnKeyType="send"
+                    onSubmitEditing={handleSubmit(handleSignUp)}
                     />
-                )}
-                />
+                    )}
+                    />
             
                 </Center>
 
@@ -303,6 +307,17 @@ export function SignUp(){
 
             </Center>
         </VStack>
-    </ScrollView>
     )
+
 }
+
+
+// const fileExtension = userPhoto.split(".").pop(); //aqui eu defino o tipo de arquivo que será informado, utizando o pop, é possível identificar o tipo se for jpg ou png por ex.
+//     console.log(fileExtension);
+
+// const photoFile = {
+//     name: `${user?.name}.${fileExtension}`.toLowerCase(),
+//     uri: userPhoto,
+//     type: "image"
+// } as any; // a foto terá o nome do usuário como default e tipo(png) e a foto em si.
+//  console.log(photoFile)

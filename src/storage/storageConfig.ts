@@ -1,4 +1,4 @@
-const USER_STORAGE = "@gymignite:user" //CHAVE PARA ARMAZENAR O USUÁRIO
-const AUTH_TOKEN_STORAGE = "@gymignite:token"
+const USER_STORAGE = "@marketspace:user" //CHAVE PARA ARMAZENAR O USUÁRIO
+const AUTH_TOKEN_STORAGE = "@marketspace:token" //CHAVE PARA ARMAZENAR O TOKEN DO USUÁRIO
 
 export { USER_STORAGE, AUTH_TOKEN_STORAGE };

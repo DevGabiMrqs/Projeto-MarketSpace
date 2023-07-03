@@ -1,10 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Platform } from "react-native/Libraries/Utilities/Platform";
+import { Platform } from "react-native";
 import { useTheme } from "native-base";
-import { color } from "native-base/lib/typescript/theme/styled-system";
-
 
 import { Home } from "../screens/Home";
 import { AdsDetails } from "../screens/AdsDetails";
@@ -15,7 +13,10 @@ import { PreVisualOfAds } from "../screens/PreVisualOfAds";
 import { EditAds } from "../screens/EditAds";
 import { FilterAds } from "../screens/FilterAds";
 import { SignOut } from "../screens/SignOut";
+
 import HomeSvg from "../assets/Home.svg"
+import BuySvg from "../assets/Buy.svg"
+import SignOutSvg from "../assets/SignOut.svg"
 
 export type AppRoutesProp = {
    home: undefined,
@@ -26,7 +27,7 @@ export type AppRoutesProp = {
    createAds: undefined,
    preVisualOfAds: undefined,
    editAds: undefined,
-    signOut: undefined,
+   signOut: undefined,
 }
 
 export type AppNavigatorRoutesProp = BottomTabNavigationProp<AppRoutesProp> //defini um tipo para poder passar as rotas no bottomTab
@@ -41,6 +42,7 @@ export function AppRoutes() {
     const iconSize = sizes[6]
 
     return(
+    
         <Navigator
        screenOptions={{
             headerShown: false,
@@ -51,21 +53,20 @@ export function AppRoutes() {
             backgroundColor: colors.gray[700],
             borderTopWidth: 0,
             height: Platform.OS === 'android' ? 'auto' : 96,
-            paddingBottom: sizes[10],
-           paddingTop: sizes[6]
-     }
-
-       }}
-        >
+            paddingBottom: sizes[6],
+            paddingTop: sizes[6]
+            }
+        }
+    }>
 
         <Screen
             name="home"
             component={Home}
-            //options={{
-               // tabBarIcon:() => (
-                  //  <HomeSvg/>
-                //)
-            //}}
+            options={{
+               tabBarIcon:({color}) => (
+                   <HomeSvg fill={color} width={iconSize} height={iconSize} style={{marginLeft: 84}}/>
+                )
+            }}
         />
 
         <Screen 
@@ -86,6 +87,11 @@ export function AppRoutes() {
         <Screen
             name="myAds"
             component={MyAds}
+            options={{
+                tabBarIcon:({color}) => (
+                    <BuySvg fill={color} width={iconSize} height={iconSize} />
+                )
+            }}
         />
 
         <Screen
@@ -106,6 +112,11 @@ export function AppRoutes() {
         <Screen 
             name="signOut"
             component={SignOut}
+            options={{
+                tabBarIcon: ({color}) => (
+                    <SignOutSvg fill={color} width={iconSize} height={iconSize} style={{marginRight: 84}}/>
+                )
+            }}
         />
 
         </Navigator>
