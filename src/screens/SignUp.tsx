@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, VStack, Center, Text, ScrollView, Icon, Pressable, View, useToast, Alert} from "native-base";
+import { Box, VStack, Center, Text, Icon, Pressable, View, useToast } from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
