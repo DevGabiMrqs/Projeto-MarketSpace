@@ -1,33 +1,34 @@
 import React, { useState } from "react";
-import { Button, HStack, Text, VStack, useToast, Icon, Link } from "native-base";
-import { Ionicons } from '@expo/vector-icons'; 
+import { HStack, Text, VStack, useToast, Icon, Button, Box } from "native-base";
+import { TouchableOpacity } from "react-native";
+
+import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { FileInfo } from "expo-file-system";
 import { ImagePickerSuccessResult } from "expo-image-picker";
-import { TouchableOpacity } from "react-native";
 
 import { Photo } from "../components/Photo";
-import { AppError } from "../utils/AppError";
 import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
+import { Input } from "../components/Input";
+
 
 
 export function Home() {
 
-    const [photoIsLoading, setPhotoIsLoading] = useState(true);
-    const [ userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
-    const[avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult);
-    const toast = useToast();
 
     const { user } = useAuth();
 
     
-    async function handleUserPhotoSelect(){}     
+    async function handleUserPhotoSelect(){
+        
+       
+    }     
     
 
     return(
-        <VStack paddingLeft={6} paddingRight={5}>
+        <VStack  flex={1} paddingLeft={6} paddingRight={5} bgColor="gray.600">
 
             <HStack marginTop={16} >
                 <TouchableOpacity onPress={handleUserPhotoSelect}>
@@ -43,18 +44,54 @@ export function Home() {
                         {user.name}
                     </Text>
                 </VStack>
-
-                <Button backgroundColor="gray.100" fontFamily="heading" ml={16} w={139} h={42}>
-                    Criar anúncio
+                    
+                <Button w={135} bgColor="gray.100" ml={16}>
+                    <HStack flexDirection="row" alignItems="center">
+                        <Icon
+                        as={Ionicons}
+                        name="add"
+                        size={22}
+                        color="gray.600"
+                        />
+                        <Text color="gray.600" pl={2}>Criar anúncio</Text>
+                    </HStack>    
                 </Button>
+
             </HStack>
 
-            <Text pt={5} pb={2} color="gray.300" fontFamily="body" fontSize="sm">
-                Seus produtos anunciados para venda
-            </Text>
+                <Text pt={5} pb={2} color="gray.300" fontFamily="body" fontSize="sm">
+                    Seus produtos anunciados para venda
+                </Text>
 
-        <CardActiveAds />
+                <CardActiveAds />
 
+                <Text pt={5} color="gray.300">
+                    Compre produtos variados
+                </Text>
+
+                <HStack alignItems="center" pr={16}>
+                    <Input 
+                    w={345} 
+                    mt={2}
+                    placeholder="Buscar anúncio"
+                    />
+                        <Icon
+                        as={Feather}
+                        name="search"
+                        size={18}
+                        color="gray.200"
+                        ml={2}
+                        />
+                        <TouchableOpacity> 
+                            <Icon 
+                            as={AntDesign}
+                            name="filter"
+                            size={18}
+                            color="gray.200"
+                            />
+                        </TouchableOpacity>
+                </HStack>
         </VStack>
+        //ONPRESS DO TOUCHABLE FILTER FAZER FUNCTION ABRIR SCREEN FILTRO
     )
 }

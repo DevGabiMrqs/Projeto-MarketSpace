@@ -7,7 +7,7 @@ export function CardActiveAds() {
 
 
     return(
-        <HStack flexDirection="row" alignItems="center" bgColor="gray.600" borderRadius={6}>
+        <HStack flexDirection="row" alignItems="center" bgColor="blueGray.200" borderRadius={6}>
             <Icon
             as={Feather} 
             name="tag" 
@@ -23,18 +23,20 @@ export function CardActiveAds() {
                     anúncios ativos
                 </Text>
             </VStack>
-            <Box pl={12}  flex={0} justifyContent="space-between">
+            <Box pl={12} >
                 <TouchableOpacity>
-                    <Text color="blue.100" fontFamily="heading" fontSize={12}>
-                        Meus anúncios
-                    <Icon 
-                    as={AntDesign}
-                    name="arrowright"
-                    size={4}
-                    color="blue.100"
-                    ml={2}
-                    />
-                    </Text>
+                    <HStack alignItems="center">
+                        <Text color="blue.100" fontFamily="heading" fontSize={12}>
+                            Meus anúncios
+                        </Text>
+                        <Icon 
+                        as={AntDesign}
+                        name="arrowright"
+                        size={4}
+                        color="blue.100"
+                        ml={2}
+                        />
+                    </HStack>
                 </TouchableOpacity>
             </Box>
         </HStack>
