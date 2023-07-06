@@ -12,25 +12,79 @@ import { Photo } from "../components/Photo";
 import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
-
-
+import { AppError } from "../utils/AppError";
+import { api } from "../services/api";
 
 export function Home() {
 
+    const[userPhoto, setUserPhoto] = useState("AvatarSvg");
 
+    const toast = useToast();
     const { user } = useAuth();
 
-    
+    //Melhor manter o padrão de só chamar a foto e não atualizá-la aqui.
     async function handleUserPhotoSelect(){
+
+        try {
+            
+            
+            const photoSelected = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            aspect: [4, 4],
+            allowsEditing: true
+
+        })
         
-       
+        if(photoSelected.canceled) {
+            return;
+        }
+        
+        if(photoSelected.assets[0].uri){
+            setUserPhoto(photoSelected.assets[0].uri)
+            
+            const photoInfo:FileInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+            
+            if(photoInfo.exists && !photoInfo.isDirectory) {
+                if(photoInfo.size && (photoInfo.size /1024 /1024) > 5)
+                
+                return toast.show({
+                    title: "Por favor escolha uma foto menor que 5MB.",
+                    placement: "top",
+                    bgColor: "red.600"
+                })
+            }  
+        }
+
+        const fileExtension = photoSelected.assets[0].uri.split(".").pop();
+         
+        const photoFile = {
+            name: `${user.name}.${fileExtension}`.toLowerCase(),
+            uri: photoSelected.assets[0].uri,
+            type: "image"
+          } as any;
+
+        setUserPhoto(photoFile)
+
+        } catch (error) {
+
+            const isAppError = error instanceof AppError;
+            const title = isAppError ? error.message : "Não foi possível carregar a foto"
+
+            toast.show({
+                title,
+                placement: "top",
+            })   
+        
+        }
+        
     }     
     
 
     return(
         <VStack  flex={1} paddingLeft={6} paddingRight={5} bgColor="gray.600">
 
-            <HStack marginTop={16} >
+            <HStack marginTop={16}>
                 <TouchableOpacity onPress={handleUserPhotoSelect}>
                     <Photo size={12}/>
                 </TouchableOpacity>
