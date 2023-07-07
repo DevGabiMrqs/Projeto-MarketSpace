@@ -13,7 +13,7 @@ import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
 import { AppError } from "../utils/AppError";
-import { api } from "../services/api";
+import { FilterAds } from "../screens/FilterAds";
 
 export function Home() {
 
@@ -136,7 +136,7 @@ export function Home() {
                         color="gray.200"
                         ml={2}
                         />
-                        <TouchableOpacity> 
+                        <TouchableOpacity onPress={FilterAds}> 
                             <Icon 
                             as={AntDesign}
                             name="filter"

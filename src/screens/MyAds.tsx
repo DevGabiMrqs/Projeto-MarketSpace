@@ -5,16 +5,6 @@ export function MyAds() {
 
 
     return(
-        // <Stack direction={{
-        //     base:"column"
-        //     md:"row"
-        // }}>
-        // </Stack>
-        // <Modal>
-        //     <Modal.Content>
-
-        //     </Modal.Content>
-        // </Modal>
         <></>
     )
 }
