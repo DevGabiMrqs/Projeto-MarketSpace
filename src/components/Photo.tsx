@@ -1,7 +1,5 @@
 import React from "react";
-import { Image, IImageProps} from "native-base"
-import AvatarSvg from "../assets/Avatar.svg"
-import { number } from "yup";
+import { Image, IImageProps} from "native-base";
 
 type Props = IImageProps & {
     size: number;

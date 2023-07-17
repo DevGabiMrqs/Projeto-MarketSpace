@@ -11,9 +11,7 @@ import { DetailsOfMyAds } from "../screens/DetailsOfMyAds";
 import { CreateAds } from "../screens/CreateAds";
 import { PreVisualOfAds } from "../screens/PreVisualOfAds";
 import { EditAds } from "../screens/EditAds";
-import { FilterAds } from "../screens/FilterAds";
 import { SignOut } from "../screens/SignOut";
-
 import HomeSvg from "../assets/Home.svg"
 import BuySvg from "../assets/Buy.svg"
 import SignOutSvg from "../assets/SignOut.svg"
@@ -69,10 +67,10 @@ export function AppRoutes() {
             }}
         />
 
-        <Screen 
+        {/* <Screen 
             name="filterAds"
             component={FilterAds}
-        />
+        /> */}
 
         <Screen
             name="adsDetails"
