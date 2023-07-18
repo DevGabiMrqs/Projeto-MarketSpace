@@ -15,6 +15,7 @@ import { Input } from "../components/Input";
 import { AppError } from "../utils/AppError";
 import { api } from "../services/api";
 import { AvatarImageDefault } from "../assets/Avatar.png";
+import { AdsImages } from "../components/AdsImages";
 
 export function Home() {
 
@@ -89,6 +90,9 @@ export function Home() {
                             />
                         </TouchableOpacity>
                 </HStack>
+
+        <AdsImages/>
+            
         </VStack>
         //ONPRESS DO TOUCHABLE FILTER FAZER FUNCTION ABRIR SCREEN FILTRO
     )
