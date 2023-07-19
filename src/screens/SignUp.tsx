@@ -60,7 +60,7 @@ export function SignUp(){
     function goBackToSignIn() {
         navigation.goBack();
     }
-
+    
     async function handleUserPhotoSelect(){
         try {
             setPhotoIsLoading(true)

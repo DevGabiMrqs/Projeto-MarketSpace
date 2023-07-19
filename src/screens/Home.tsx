@@ -62,7 +62,7 @@ export function Home() {
                     Seus produtos anunciados para venda
                 </Text>
 
-                <CardActiveAds />
+                <CardActiveAds />               
 
                 <Text pt={5} color="gray.300">
                     Compre produtos variados
@@ -91,7 +91,8 @@ export function Home() {
                         </TouchableOpacity>
                 </HStack>
 
-        <AdsImages/>
+            <AdsImages/>
+        
             
         </VStack>
         //ONPRESS DO TOUCHABLE FILTER FAZER FUNCTION ABRIR SCREEN FILTRO
