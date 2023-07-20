@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { HStack, Text, VStack, useToast, Icon, Button, Box } from "native-base";
 import { TouchableOpacity } from "react-native";
 
@@ -14,8 +14,9 @@ import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
 import { AppError } from "../utils/AppError";
 import { api } from "../services/api";
-import { AvatarImageDefault } from "../assets/Avatar.png";
+import { AvatarImageDefault }  from "../assets/Avatar.png";
 import { AdsImages } from "../components/AdsImages";
+import { FilterAds } from "./FilterAds";
 
 export function Home() {
 
@@ -81,7 +82,7 @@ export function Home() {
                         color="gray.200"
                         ml={2}
                         />
-                        <TouchableOpacity> 
+                        <TouchableOpacity onPress={FilterAds}> 
                             <Icon 
                             as={AntDesign}
                             name="filter"
