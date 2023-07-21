@@ -2,9 +2,17 @@ import React from "react"
 import { HStack, Text, Image, VStack, Box} from "native-base"
 import { Photo } from "./Photo"
 import { TouchableOpacity } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import { AppNavigatorRoutesProp } from "../routes/app.routes"
 
 
 export function AdsImages() {
+
+    const navigation = useNavigation<AppNavigatorRoutesProp>()
+
+    function goToDetailsOftheAds() {
+    navigation.navigate("adsDetails")
+    }
 
 
     return (
@@ -12,7 +20,7 @@ export function AdsImages() {
             <HStack justifyContent="space-between" m={2}>
 
                 <VStack position="relative">
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={goToDetailsOftheAds}>
                         <Box position="absolute" zIndex={1} top={1} left={1}>
                             <Photo size={8}/>
                         </Box>
@@ -44,7 +52,7 @@ export function AdsImages() {
             
                 <VStack position="relative">
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={goToDetailsOftheAds}>
                         <Box position="absolute" zIndex={1} top={1} left={1}>
                             <Photo size={8}/>
                         </Box>

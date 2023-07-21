@@ -3,10 +3,6 @@ import { HStack, Text, VStack, useToast, Icon, Button, Box } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
-import { FileInfo } from "expo-file-system";
-import { ImagePickerSuccessResult } from "expo-image-picker";
 
 import { Photo } from "../components/Photo";
 import { useAuth } from "../hooks/useAuth";
