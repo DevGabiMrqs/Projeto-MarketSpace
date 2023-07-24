@@ -1,9 +1,12 @@
 import React from "react"
-import { HStack, Text, Image, VStack, Box} from "native-base"
-import { Photo } from "./Photo"
 import { TouchableOpacity } from "react-native"
+import { HStack, Text, Image, VStack, Box} from "native-base"
+
 import { useNavigation } from "@react-navigation/native"
+
+import { Photo } from "./Photo"
 import { AppNavigatorRoutesProp } from "../routes/app.routes"
+import {ProductImagePNG} from "../assets/ProductImage.png"
 
 
 export function AdsImages() {
@@ -36,15 +39,16 @@ export function AdsImages() {
                             width={153}
                             height={120}
                             borderRadius={10}
+                            source={{uri:ProductImagePNG}}
                             /> 
                         </Box>
                     </TouchableOpacity>
 
                         <Text fontFamily="heading" fontSize={14} color="gray.200">
-                            Tênis Vermelho
+                            Bicicleta
                         </Text>
                         <Text fontFamily="heading" fontSize={16} color="gray.100">
-                            R$ 59,90
+                            R$ 120,00
                         </Text>
                 </VStack>
           

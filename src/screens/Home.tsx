@@ -13,6 +13,7 @@ import { api } from "../services/api";
 import { AvatarImageDefault }  from "../assets/Avatar.png";
 import { AdsImages } from "../components/AdsImages";
 import { FilterAds } from "./FilterAds";
+import ProductImageSVG from "../assets/ProductImage.svg"
 
 export function Home() {
 
@@ -88,7 +89,7 @@ export function Home() {
                         </TouchableOpacity>
                 </HStack>
 
-            <AdsImages/>
+            <AdsImages />
         
             
         </VStack>
