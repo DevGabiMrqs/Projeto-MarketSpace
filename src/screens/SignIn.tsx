@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import LogoSvg from "../assets/Logo.svg";
 import { Input } from "../components/Input";
-import { Button } from "../components/Button";
+import { ButtonMadeUp } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth";
@@ -123,7 +123,7 @@ export function SignIn() {
                 )}
                 />
 
-                    <Button 
+                    <ButtonMadeUp
                     title="Entrar"
                     variante="blue.200"
                     colors="gray.700"
@@ -134,7 +134,7 @@ export function SignIn() {
         </VStack>
         <Center pt={50}>
             <Text pb={5}>Ainda não tem acesso?</Text>
-            <Button 
+            <ButtonMadeUp
             title="Criar uma conta"
             variante="gray.500"
             colors="gray.200"

@@ -15,7 +15,7 @@ import * as yup from "yup";
 import LogoSvg from "../assets/Logo.svg"
 import {Photo} from "../components/Photo"
 import { Input } from "../components/Input";
-import { Button } from "../components/Button";
+import { ButtonMadeUp } from "../components/Button";
 import { api } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import { AppError } from "../utils/AppError";
@@ -284,7 +284,7 @@ export function SignUp(){
             
                 </Center>
 
-                <Button 
+                <ButtonMadeUp
                 title="Criar"
                 variante="gray.100"
                 colors="gray.600"
@@ -298,7 +298,7 @@ export function SignUp(){
                     Já tem uma conta?
                 </Text>
 
-                <Button
+                <ButtonMadeUp
                 title="Ir para o Login"
                 variante="gray.500"
                 colors="gray.200"

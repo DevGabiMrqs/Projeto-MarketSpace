@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native"
 
 import { Photo } from "./Photo"
 import { AppNavigatorRoutesProp } from "../routes/app.routes"
-import {ProductImagePNG} from "../assets/ProductImage.png"
+import BikePNG from "../assets/Bike.png"
 
 
 export function AdsImages() {
@@ -39,7 +39,7 @@ export function AdsImages() {
                             width={153}
                             height={120}
                             borderRadius={10}
-                            source={{uri:ProductImagePNG}}
+                            source={BikePNG}
                             /> 
                         </Box>
                     </TouchableOpacity>
@@ -56,7 +56,7 @@ export function AdsImages() {
             
                 <VStack position="relative">
 
-                    <TouchableOpacity onPress={goToDetailsOftheAds}>
+                    {/* <TouchableOpacity onPress={goToDetailsOftheAds}>
                         <Box position="absolute" zIndex={1} top={1} left={1}>
                             <Photo size={8}/>
                         </Box>
@@ -80,7 +80,7 @@ export function AdsImages() {
                         </Text>
                         <Text fontFamily="heading" fontSize={16} color="gray.100">
                             R$ 59,90
-                        </Text>
+                        </Text> */}
                 </VStack>
 
             </HStack>

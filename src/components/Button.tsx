@@ -8,7 +8,7 @@ type Props = IButtonProps & {
 }
 
 
-export function Button({title, variante, colors, ...rest}:Props) {
+export function ButtonMadeUp({title, variante, colors, ...rest}:Props) {
 
     return(
         <NativeBaseButton

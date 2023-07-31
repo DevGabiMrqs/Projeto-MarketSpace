@@ -8,12 +8,10 @@ import { Photo } from "../components/Photo";
 import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
-import { AppError } from "../utils/AppError";
 import { api } from "../services/api";
 import { AvatarImageDefault }  from "../assets/Avatar.png";
 import { AdsImages } from "../components/AdsImages";
 import { FilterAds } from "./FilterAds";
-import ProductImageSVG from "../assets/ProductImage.svg"
 
 export function Home() {
 
@@ -28,7 +26,7 @@ export function Home() {
 
                     <Photo 
                     size={12} 
-                    src={ user.avatar
+                    source={ user.avatar
                         ? {uri: `${api.defaults.baseURL}/avatar/${user.avatar}`}
                         : AvatarImageDefault}
                     />
