@@ -1,35 +1,34 @@
-import React from "react";
-import { HStack, Text, VStack, useToast, Icon, Button, Box } from "native-base";
+import React, { useState } from "react";
+import { HStack, Text, VStack, useToast, Icon, Button, Box, Divider, ScrollView, useDisclose, Actionsheet, Switch, Checkbox, View } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
+
 
 import { Photo } from "../components/Photo";
 import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
-import { api } from "../services/api";
-import { AvatarImageDefault }  from "../assets/Avatar.png";
 import { AdsImages } from "../components/AdsImages";
-import { FilterAds } from "./FilterAds";
+import { ButtonMadeUp } from "../components/Button";
 
 export function Home() {
 
     const { user } = useAuth();
-        
-    
-    
+    const[userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
+    const {isOpen, onOpen, onClose} = useDisclose();
+
     return(
         <VStack  flex={1} paddingLeft={6} paddingRight={5} bgColor="gray.600">
 
             <HStack marginTop={16}>
-
-                    <Photo 
+                    {/* <Photo 
                     size={12} 
                     source={ user.avatar
                         ? {uri: `${api.defaults.baseURL}/avatar/${user.avatar}`}
                         : AvatarImageDefault}
-                    />
+                    /> */}
+                    <Photo size={52} source={{uri: userPhoto}} />
 
                 <VStack paddingLeft={2}>
                     <Text color="gray.100" fontSize="md" fontFamily="body">
@@ -48,7 +47,7 @@ export function Home() {
                         size={22}
                         color="gray.600"
                         />
-                        <Text color="gray.600" pl={2}>Criar anúncio</Text>
+                        <Text color="gray.600" pl={1}>Criar anúncio</Text>
                     </HStack>    
                 </Button>
 
@@ -64,7 +63,7 @@ export function Home() {
                     Compre produtos variados
                 </Text>
 
-                <HStack alignItems="center" pr={16}>
+            <HStack alignItems="center" pr={16}>
                     <Input 
                     w={345} 
                     mt={2}
@@ -77,7 +76,10 @@ export function Home() {
                         color="gray.200"
                         ml={2}
                         />
-                        <TouchableOpacity onPress={FilterAds}> 
+
+                        <Divider bg="gray.100" thickness="1" orientation="vertical" mx={1} h={4}/>
+
+                        <TouchableOpacity onPress={onOpen}> 
                             <Icon 
                             as={AntDesign}
                             name="filter"
@@ -85,10 +87,53 @@ export function Home() {
                             color="gray.200"
                             />
                         </TouchableOpacity>
-                </HStack>
+                <VStack>
+                <Actionsheet isOpen={isOpen} onClose={onClose}>
+                    <Actionsheet.Content>
+                    <Box w="100%" px={5}>
+                    <HStack justifyContent="space-between">
+                        <Text fontFamily="heading" fontSize={20}>
+                            Filtrar Anúncios
+                        </Text>
+                        <Feather name="x" size={24} color="gray.400"/>
+                    </HStack>
 
-            <AdsImages />
-        
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} my={3}>Condição</Text>
+                    <HStack pb={6}>
+                        <Button borderRadius={50} mr={2}>
+                            NOVO
+                        </Button>
+                        <Button borderRadius={50}>
+                            USADO
+                        </Button>
+                    </HStack>
+
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14}>Aceita troca?</Text>
+                    <Box pr={330}>
+                    <Switch size="md"/>
+                    </Box>
+
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14}>Meios de pagamentos aceitos</Text>
+                    <Checkbox value="one">Boleto</Checkbox>
+                    <Checkbox value="one">Pix</Checkbox>
+                    <Checkbox value="one">Dinheiro</Checkbox>
+                    <Checkbox value="one">Cartão de Crédito</Checkbox>
+                    <Checkbox value="one">Depósito Bancário</Checkbox>
+
+                    <HStack>
+                        <ButtonMadeUp title={"Resetar filtros"} variante={"blue.200"} colors={"gray.700"}/>
+                        <ButtonMadeUp title={"Aplicar filtros"} variante={"blue.200"} colors={"gray.700"}/>
+                    </HStack>
+                    </Box>
+                    </Actionsheet.Content>
+                </Actionsheet>
+              </VStack>
+
+            </HStack>
+
+            <ScrollView>
+                <AdsImages/>
+            </ScrollView>
             
         </VStack>
         //ONPRESS DO TOUCHABLE FILTER FAZER FUNCTION ABRIR SCREEN FILTRO
