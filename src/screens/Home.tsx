@@ -11,6 +11,7 @@ import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
 import { AdsImages } from "../components/AdsImages";
 import { ButtonMadeUp } from "../components/Button";
+import { color } from "native-base/lib/typescript/theme/styled-system";
 
 export function Home() {
 
@@ -95,34 +96,30 @@ export function Home() {
                         <Text fontFamily="heading" fontSize={20}>
                             Filtrar Anúncios
                         </Text>
-                        <Feather name="x" size={24} color="gray.400"/>
+                        <Feather name="x" size={24} color="gray.400" onPress={onClose}/>
                     </HStack>
 
                     <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} my={3}>Condição</Text>
                     <HStack pb={6}>
-                        <Button borderRadius={50} mr={2}>
-                            NOVO
-                        </Button>
-                        <Button borderRadius={50}>
-                            USADO
-                        </Button>
+                        <ButtonMadeUp borderRadius={50} mr={2} title={"NOVO"} variante={"blue.200"} colors={"gray.600"} w={20}/>
+                        <ButtonMadeUp borderRadius={50} mr={2} title={"USADO"} variante={"gray.500"} colors={"gray.200"} w={20}/>
                     </HStack>
 
                     <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14}>Aceita troca?</Text>
-                    <Box pr={330}>
-                    <Switch size="md"/>
+                    <Box pr={285} mb={4}>
+                    <Switch size="lg" colorScheme="blueGray"/>
                     </Box>
 
-                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14}>Meios de pagamentos aceitos</Text>
-                    <Checkbox value="one">Boleto</Checkbox>
-                    <Checkbox value="one">Pix</Checkbox>
-                    <Checkbox value="one">Dinheiro</Checkbox>
-                    <Checkbox value="one">Cartão de Crédito</Checkbox>
-                    <Checkbox value="one">Depósito Bancário</Checkbox>
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} mb={4}>Meios de pagamentos aceitos</Text>
+                    <Checkbox value="one" mb={1}>Boleto</Checkbox>
+                    <Checkbox value="one" mb={1}>Pix</Checkbox>
+                    <Checkbox value="one" mb={1}>Dinheiro</Checkbox>
+                    <Checkbox value="one" mb={1}>Cartão de Crédito</Checkbox>
+                    <Checkbox value="one" mb={1}>Depósito Bancário</Checkbox>
 
-                    <HStack>
-                        <ButtonMadeUp title={"Resetar filtros"} variante={"blue.200"} colors={"gray.700"}/>
-                        <ButtonMadeUp title={"Aplicar filtros"} variante={"blue.200"} colors={"gray.700"}/>
+                    <HStack pt={10} mb={3}>
+                        <ButtonMadeUp title="Resetar filtros" variante="gray.500" colors="gray.200" w={40} mr={3}/>
+                        <ButtonMadeUp title="Aplicar filtros" variante="gray.100" colors="gray.700" w={40}/>
                     </HStack>
                     </Box>
                     </Actionsheet.Content>
