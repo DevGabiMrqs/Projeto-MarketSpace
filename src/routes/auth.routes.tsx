@@ -1,8 +1,9 @@
 import React from "react";
-import { createNativeStackNavigator, NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack"; //lib de react-navigation
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack"; //lib de react-navigation
 
 import { SignIn } from "../screens/SignIn";
 import { SignUp } from "../screens/SignUp";
+
 
 //Auth são as telas de SignIn e SignUp
 

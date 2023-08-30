@@ -14,7 +14,6 @@ import { AppNavigatorRoutesProp } from "src/routes/app.routes";
 export function AdsDetails() {
 
     const[userPhoto, setUserPhoto] = useState("https://images.pexels.com/photos/17897079/pexels-photo-17897079/free-photo-of-adulto-garoto-menino-rapaz.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
-    //const { home } = useAuth();
     const navigation = useNavigation<AppNavigatorRoutesProp>();
 
     function goBackToHome()  {
@@ -41,9 +40,27 @@ export function AdsDetails() {
                     </Text>
                 </HStack>
             </VStack>
-            <Box bgColor="gray.200" borderRadius={50} position="absolute" zIndex={1} top={420} right={80}>
-                    <Text color="gray.700" p={1} fontSize={12}>USADO</Text>
+        
+            <Box bgColor="gray.200" borderRadius={50} position="absolute" zIndex={1} top={410} right={80}>
+                <Text color="gray.700" p={1} fontSize={12}>USADO</Text>
             </Box>
+          
+            <HStack mt={16} ml={6} justifyContent="space-between" pr={6}>
+                <Text fontFamily="heading" fontSize={20} color="gray.100">
+                    Bicicleta
+                </Text>
+                <Text fontFamily="heading" fontSize={20} color="blue.200">
+                    R$ 120,00
+                </Text>
+            </HStack>
+            <VStack>
+                <Text p={6} textAlign="justify">
+                Cras congue cursus in tortor sagittis placerat nunc,
+                tellus arcu. Vitae ante leo eget maecenas urna mattis cursus. 
+                Mauris metus amet nibh mauris mauris accumsan, euismod. 
+                Aenean leo nunc, purus iaculis in aliquam.
+                </Text>
+            </VStack>
         </VStack>
     )
 }

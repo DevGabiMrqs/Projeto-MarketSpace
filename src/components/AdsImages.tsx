@@ -16,7 +16,7 @@ export function AdsImages() {
     const[userPhoto, setUserPhoto] = useState("https://images.pexels.com/photos/17897079/pexels-photo-17897079/free-photo-of-adulto-garoto-menino-rapaz.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
 
     function goToDetailsOftheAds() {
-    navigation.navigate("adsDetails")
+        navigation.navigate("adsDetails")
     }
 
 

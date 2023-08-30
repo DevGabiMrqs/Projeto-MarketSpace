@@ -5,8 +5,6 @@ import { Karla_400Regular, Karla_700Bold } from "@expo-google-fonts/karla";
 
 import { THEME } from "./src/theme/index";
 import { IsLoading } from "./src/components/IsLoading";
-import { AuthRoutes } from "./src/routes/auth.routes";
-import { NavigationContainer } from "@react-navigation/native";
 import { Routes } from "./src/routes/index";
 import { AuthContextProvider } from "./src/contexts/AuthContext";
 
@@ -28,8 +26,7 @@ export default function App() {
           {fontsLoaded ? <Routes/> : <IsLoading /> }
         </AuthContextProvider>
         
-      </NativeBaseProvider>
-      
+      </NativeBaseProvider> 
   );
 }
 

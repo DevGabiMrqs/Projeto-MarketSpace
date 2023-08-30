@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Platform } from "react-native";
@@ -16,6 +16,7 @@ import { SignOut } from "../screens/SignOut";
 import HomeSvg from "../assets/Home.svg"
 import BuySvg from "../assets/Buy.svg"
 import SignOutSvg from "../assets/SignOut.svg"
+import React from "react";
 
 export type AppRoutesProp = {
    home: undefined,

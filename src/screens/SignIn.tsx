@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Text, Center, Box, Pressable, Icon, useToast} from "native-base";
+import { VStack, Text, Center, Box, Pressable, Icon, useToast, ScrollView} from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth";
 import { AppError } from "../utils/AppError";
-import { ScrollView } from "react-navigation";
+// import { ScrollView } from "react-navigation";
 
 type FormDataProps = {
     email: string;
