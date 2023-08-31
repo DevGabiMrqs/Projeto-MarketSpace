@@ -114,7 +114,7 @@ export function AppRoutes() {
             component={SignOut}
             options={{
                 tabBarIcon: ({color}) => (
-                    <SignOutSvg fill={color} width={iconSize} height={iconSize} style={{marginRight: 84}}/>
+                    <SignOutSvg fill={color} width={iconSize} height={iconSize} style={{marginRight: 84}} onPress={SignOut}/>
                 )
             }}
         />

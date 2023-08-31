@@ -1,16 +1,22 @@
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 
 export function SignOut() {
 
-        useFocusEffect(React.useCallback(() => {
+    const { signOut } = useContext(AuthContext)
 
-        }, []))
+    useFocusEffect(
+        useCallback(() => {
+            signOut();
+        }, [])
+    );
 
-// 
 
     return(
-        <></>
+        <>
+
+        </>
     )
 }

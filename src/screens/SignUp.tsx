@@ -133,11 +133,11 @@ export function SignUp(){
         formData.append('tel', tel)
         formData.append('password', password)
 
-        // const headers = {
-        //     'Content-Type': 'multipart/form-data'
-        // }
+        const headers = {
+             'Content-Type': 'multipart/form-data'
+        }
         
-        const response = await api.post("/users", formData);
+        const response = await api.post("/users", formData, {headers});
         await signIn(email, password);
         console.log(response.data)
         
