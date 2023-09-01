@@ -133,6 +133,5 @@ export function Home() {
             </ScrollView>
             
         </VStack>
-        //ONPRESS DO TOUCHABLE FILTER FAZER FUNCTION ABRIR SCREEN FILTRO
     )
 }

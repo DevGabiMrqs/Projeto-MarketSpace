@@ -1,10 +1,19 @@
 import React from "react";
 import { HStack, VStack, Text, Icon, View, Box } from "native-base";
-import { Feather, AntDesign } from '@expo/vector-icons'
 import { TouchableOpacity } from "react-native";
-import { MyAds } from "../screens/MyAds";
+
+import { Feather, AntDesign } from '@expo/vector-icons'
+import { useNavigation } from "@react-navigation/native";
+
+import { AppNavigatorRoutesProp } from "src/routes/app.routes";
+
 
 export function CardActiveAds() {
+    const navigation = useNavigation<AppNavigatorRoutesProp>()
+
+    function goToMyAds() {
+        navigation.navigate("myAds")
+    }
 
     return(
         <HStack flexDirection="row" alignItems="center" bgColor="blueGray.200" borderRadius={6}>
@@ -24,9 +33,9 @@ export function CardActiveAds() {
                 </Text>
             </VStack>
             <Box pl={12} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={goToMyAds} >
                     <HStack alignItems="center">
-                        <Text color="blue.100" fontFamily="heading" fontSize={12} onPress={MyAds}>
+                        <Text color="blue.100" fontFamily="heading" fontSize={12}>
                             Meus anúncios
                         </Text>
                         <Icon 
