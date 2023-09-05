@@ -46,10 +46,10 @@ export function AdsDetails() {
             </Box>
           
             <HStack mt={16} ml={6} justifyContent="space-between" pr={6}>
-                <Text fontFamily="heading" fontSize={20} color="gray.100">
+                <Text fontFamily="heading" fontSize={20} color={"gray.200"}>
                     Bicicleta
                 </Text>
-                <Text fontFamily="heading" fontSize={20} color="blue.200">
+                <Text fontFamily="heading" fontSize={20} color={"blue.200"}>
                     R$ 120,00
                 </Text>
             </HStack>
@@ -61,6 +61,15 @@ export function AdsDetails() {
                 Aenean leo nunc, purus iaculis in aliquam.
                 </Text>
             </VStack>
+            <HStack ml={6}>
+                <Text color={"gray.100"} fontFamily="heading">
+                    Aceita troca?  
+                </Text>
+                <Text>
+                    Não
+                </Text>
+            </HStack>
+
         </VStack>
     )
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, VStack, Text, Icon, Center, Box, Image } from "native-base";
+import { HStack, VStack, Text, Icon, Center, Box, Image, Select } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons'; 
@@ -40,6 +40,12 @@ export function MyAds() {
             </Center>
 
             <HStack>
+                <Text mt={8} ml={9}>
+                    4 anúncios
+                </Text>
+                <Select>
+
+                </Select>
                 
             </HStack>
 
