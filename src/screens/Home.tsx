@@ -3,7 +3,7 @@ import { HStack, Text, VStack, useToast, Icon, Button, Box, Divider, ScrollView,
 import { TouchableOpacity } from "react-native";
 
 import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
-
+import { useNavigation } from "@react-navigation/native";
 
 import { Photo } from "../components/Photo";
 import { useAuth } from "../hooks/useAuth";
@@ -12,13 +12,22 @@ import { Input } from "../components/Input";
 import { AdsImages } from "../components/AdsImages";
 import { ButtonMadeUp } from "../components/Button";
 import { color } from "native-base/lib/typescript/theme/styled-system";
+import { CreateAds } from "./CreateAds";
+import { AppNavigatorRoutesProp } from "src/routes/app.routes";
 
 export function Home() {
 
     const { user } = useAuth();
     const[userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
     const {isOpen, onOpen, onClose} = useDisclose();
+    const navigation = useNavigation<AppNavigatorRoutesProp>()
 
+    function goToCreateAds() {  
+        navigation.navigate("createAds")
+    }
+
+
+    //invalid hook call se você chamar a função de outra tela para 
     return(
         <VStack  flex={1} paddingLeft={6} paddingRight={5} bgColor="gray.600">
 
@@ -36,11 +45,11 @@ export function Home() {
                         Boas vindas, 
                     </Text>
                     <Text color="gray.100" fontSize="md" fontFamily="heading">
-                        {user.name}
+                        {user.name}!
                     </Text>
                 </VStack>
                     
-                <Button w={135} bgColor="gray.100" ml={16}>
+                <Button w={135} bgColor="gray.100" ml={16} onPress={goToCreateAds}>
                     <HStack flexDirection="row" alignItems="center">
                         <Icon
                         as={Ionicons}

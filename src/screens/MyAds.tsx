@@ -34,6 +34,7 @@ export function MyAds() {
                         size={23}
                         color="gray.100"
                         mt={1}
+                     
                         />
                     </TouchableOpacity>
                 </HStack>
@@ -43,14 +44,11 @@ export function MyAds() {
                 <Text mt={8} ml={9}>
                     4 anúncios
                 </Text>
-                <Select>
-
-                </Select>
                 
             </HStack>
 
-            <VStack>
-            <HStack justifyContent="space-between" m={8}>
+            <VStack mt={8}>
+            <HStack justifyContent="space-between" mx={8}>
 
                 <VStack position="relative">
                     <TouchableOpacity onPress={goToDetailsOfMyAds}>
@@ -114,8 +112,8 @@ export function MyAds() {
             </HStack>
            
 
-        <VStack>
-            <HStack justifyContent="space-between" m={8}>
+        <VStack mt={4}>
+            <HStack justifyContent="space-between" mx={8}>
 
                 <VStack position="relative">
                     <TouchableOpacity onPress={goToDetailsOfMyAds}>

@@ -1,8 +1,8 @@
-// import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 import { Platform } from "react-native";
 import { useTheme } from "native-base";
+
+import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Home } from "../screens/Home";
 import { AdsDetails } from "../screens/AdsDetails";
@@ -11,12 +11,10 @@ import { DetailsOfMyAds } from "../screens/DetailsOfMyAds";
 import { CreateAds } from "../screens/CreateAds";
 import { PreVisualOfAds } from "../screens/PreVisualOfAds";
 import { EditAds } from "../screens/EditAds";
-//import { FilterAds } from "../screens/FilterAds";
 import { SignOut } from "../screens/SignOut";
 import HomeSvg from "../assets/Home.svg"
 import BuySvg from "../assets/Buy.svg"
 import SignOutSvg from "../assets/SignOut.svg"
-import React from "react";
 
 export type AppRoutesProp = {
    home: undefined,
@@ -47,8 +45,8 @@ export function AppRoutes() {
        screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
-            tabBarActiveTintColor: colors.gray[200],
-            tabBarInactiveTintColor: colors.gray[400],
+            tabBarActiveTintColor: colors.gray[100],
+            tabBarInactiveTintColor: colors.gray[600],
             tabBarStyle: {
             backgroundColor: colors.gray[700],
             borderTopWidth: 0,
@@ -69,11 +67,6 @@ export function AppRoutes() {
             }}
         />
 
-        {/* <Screen 
-            name="filterAds"
-            component={FilterAds}
-        />  */}
-
         <Screen
             name="adsDetails"
             component={AdsDetails}
@@ -89,7 +82,7 @@ export function AppRoutes() {
             component={MyAds}
             options={{
                 tabBarIcon:({color}) => (
-                    <BuySvg fill={color} width={iconSize} height={iconSize} />
+                    <BuySvg fill={color} width={iconSize} height={iconSize}/>
                 )
             }}
         />
@@ -97,6 +90,7 @@ export function AppRoutes() {
         <Screen
             name="createAds"
             component={CreateAds}
+            options={{ tabBarButton: () => null }}
         />
 
         <Screen

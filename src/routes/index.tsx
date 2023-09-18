@@ -22,7 +22,6 @@ export function Routes() {
         return <IsLoading />
     }
 
-
     return(
         <Box flex={1} >
             <NavigationContainer theme={theme}> 
