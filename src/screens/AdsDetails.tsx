@@ -7,7 +7,6 @@ import ProductImageSVG from "../assets/ProductImage.svg"
 import { Photo } from "../components/Photo";
 import { ImageBackground, Touchable, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "src/hooks/useAuth";
 import { AppNavigatorRoutesProp } from "src/routes/app.routes";
 import { PaymentMethods } from "../components/PaymentMethods";
 

@@ -18,20 +18,22 @@ function goBackToHome()  {
 
 return(
     <ScrollView>
-        <VStack>
+        <VStack paddingTop={10} pl={8}>
             <HStack>
                 <TouchableOpacity onPress={goBackToHome}>
                     <AntDesign name="arrowleft" size={26} color="gray.100" />
                 </TouchableOpacity>
-                <Text pl={8}>
+                <Text ml={20} fontSize={20} fontFamily="heading">
                     Criar anúncio
                 </Text>
             </HStack>
-            <Text>Imagens</Text>
-            <Text>
+            <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Imagens</Text>
+            <Text mt={2} fontFamily="body" fontSize={14} color="gray.200">
                 Escolha até 3 imagens para mostrar o quanto seu 
                 produto é incrível!
             </Text>
+            
         </VStack>
     </ScrollView>
 )}
+

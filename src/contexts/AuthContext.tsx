@@ -14,11 +14,10 @@ export type AuthContextDataProps = {
     signOut: () => Promise<void>;
 }
 
-
 export const AuthContext = createContext<AuthContextDataProps>({} as AuthContextDataProps) //criado o contexto que será passado para o elemento filho
 
 type AuthContextProviderProps = {
-    children: ReactNode; //reactnode vai permitir eu renderizar qualquer coisa como filho do componente
+    children: ReactNode; //react node vai permitir eu renderizar qualquer coisa como filho do componente
 }
 
 export function AuthContextProvider({children} : AuthContextProviderProps) {//vou passar essa children com o auth no app para levar o contexto do filho pro pai
