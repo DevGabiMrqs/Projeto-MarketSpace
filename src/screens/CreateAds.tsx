@@ -26,7 +26,7 @@ export function CreateAds() {
 const navigation = useNavigation<AppNavigatorRoutesProp>();
 const [avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult)
 const [photoIsLoading, setPhotoIsLoading] = useState(false)
-const [productPhoto, setProductPhoto] = useState<any>();
+const [productPhoto, setProductPhoto] = useState<ImagePickerSuccessResult[]>([]);
 //const [value, setValue] = useState();
 
 const toast = useToast();
@@ -52,7 +52,7 @@ try {
         }
 
         if(photoSelected.assets[0].uri) {
-            setProductPhoto(photoSelected.assets[0].uri)
+            //setProductPhoto(photoSelected.assets[0].uri)
             const photoInfo:FileInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
              
             if(photoInfo.exists && !photoInfo.isDirectory) { 
@@ -63,6 +63,8 @@ try {
                      bgColor: "red.600"
                 })
             }
+
+            setProductPhoto((prevPhotos) => [...prevPhotos, photoSelected]);
         }
 
          setAvatar(photoSelected);
@@ -133,25 +135,27 @@ return (
 
 
         <HStack>
-        {/* if ternário pra selecionar a imagem */}
-        { productPhoto ? 
-        (<Image 
+
+        {productPhoto.map((photo, index) => (
+        <Image 
             borderRadius={6} 
             mt={4} 
             w={100} 
-            h={100} 
-            source={{ uri: productPhoto }} 
-            alt="Foto do Produto"
+            h={100}
+            ml={1}
+            source={{ uri: photo.assets[0].uri }} 
+            alt={`Foto ${index}`}
             />
-        ) : (
-            <TouchableOpacity onPress={handleProductPhoto}>
-                    <Stack backgroundColor="gray.500" borderRadius={6} mt={4} w={100} h={100} alignItems="center" justifyContent="center">
-                        <AntDesign
-                            name="plus"
-                            size={26}
-                            color="gray" />
-                    </Stack>
-            </TouchableOpacity>
+        ))}
+        {productPhoto.length < 3 && (
+        <TouchableOpacity onPress={handleProductPhoto}>
+            <Stack backgroundColor="gray.500" borderRadius={6} mt={4} w={100} h={100} ml={1} alignItems="center" justifyContent="center">
+                <AntDesign
+                    name="plus"
+                    size={26}
+                    color="gray" />
+            </Stack>
+        </TouchableOpacity>
         )}
         </HStack>
 
