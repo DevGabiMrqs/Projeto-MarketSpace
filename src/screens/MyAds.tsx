@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, VStack, Text, Icon, Center, Box, Image, Select } from "native-base";
+import { HStack, VStack, Text, Icon, Center, Box, Image, Select, CheckIcon } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons'; 
@@ -15,6 +15,7 @@ import ComodaPNG from "../assets/Comoda.png"
 export function MyAds() {
 
     const navigation = useNavigation<AppNavigatorRoutesProp>()
+    const [typeOfFilter, setTypeOfFilter] = React.useState("")
 
     function goToDetailsOfMyAds(){
         navigation.navigate("detailsOfMyAds")
@@ -22,9 +23,8 @@ export function MyAds() {
 
     return(
         <VStack >
-            <Center>
-                <HStack mt={10} alignItems="center">
-                        <Text fontFamily="heading" fontSize={20}>
+                <HStack mt={10}>
+                        <Text fontFamily="heading" ml={32} fontSize={20}>
                             Meus anúncios
                         </Text>
                     <TouchableOpacity>
@@ -34,17 +34,21 @@ export function MyAds() {
                         size={23}
                         color="gray.100"
                         mt={1}
-                     
+                        ml={16}
                         />
                     </TouchableOpacity>
                 </HStack>
-            </Center>
-
             <HStack>
                 <Text mt={8} ml={9}>
                     4 anúncios
                 </Text>
-                
+                <Select mt={6} ml={32}  selectedValue={typeOfFilter} fontSize="md" w={32} h={8} accessibilityLabel="Filtro" placeholder="Todos"placeholderTextColor={"gray.100"}  _selectedItem={{
+                    bg: "gray.600",
+                }} onValueChange={itemValue => setTypeOfFilter(itemValue)}>
+                    <Select.Item label="Todos" value="todos" />
+                    <Select.Item label="Novo" value="novo" />
+                    <Select.Item label="Usado" value="usado" />
+                    </Select>
             </HStack>
 
             <VStack mt={8}>

@@ -70,6 +70,9 @@ export function AppRoutes() {
         <Screen
             name="adsDetails"
             component={AdsDetails}
+            options={{
+                tabBarStyle: {display: 'none'}
+            }}
         />
 
         <Screen
@@ -82,7 +85,7 @@ export function AppRoutes() {
             component={MyAds}
             options={{
                 tabBarIcon:({color}) => (
-                    <BuySvg fill={color} width={iconSize} height={iconSize}/>
+                    <BuySvg fill={color} width={iconSize} height={iconSize} style={{marginLeft: 40}}/>
                 )
             }}
         />
@@ -90,7 +93,9 @@ export function AppRoutes() {
         <Screen
             name="createAds"
             component={CreateAds}
-            options={{ tabBarButton: () => null }}
+            options={{
+                tabBarStyle: { display: 'none' }
+            }}
         />
 
         <Screen

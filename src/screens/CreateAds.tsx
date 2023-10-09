@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image } from "native-base";
+import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox } from "native-base";
 import { SwitchBase, TouchableOpacity, View } from "react-native";
 
 import * as ImagePicker from 'expo-image-picker';
@@ -20,6 +20,7 @@ type FormDataPropss = {
     product_id: string;
     avatar: string;
 }
+
 
 export function CreateAds() {
 
@@ -126,29 +127,28 @@ return (
                 </Text>
             </HStack>
 
-            <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Imagens</Text>
-            <Text mt={2} fontFamily="body" fontSize={14} color="gray.200">
+            <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Imagens</Text>
+            <Text mt={2} fontFamily="body" fontSize={14} color={"gray.100"}>
                 Escolha até 3 imagens para mostrar o quanto seu 
                 produto é incrível!
             </Text>
-        </VStack>
 
 
         <HStack>
 
         {productPhoto.map((photo, index) => (
         <Image 
-            borderRadius={6} 
-            mt={4} 
-            w={100} 
-            h={100}
-            ml={1}
-            source={{ uri: photo.assets[0].uri }} 
-            alt={`Foto ${index}`}
-            />
+        borderRadius={6} 
+        mt={4} 
+        w={100} 
+        h={100}
+        ml={1}
+        source={{ uri: photo.assets[0].uri }} 
+        alt={`Foto ${index}`}
+        />
         ))}
         {productPhoto.length < 3 && (
-        <TouchableOpacity onPress={handleProductPhoto}>
+            <TouchableOpacity onPress={handleProductPhoto}>
             <Stack backgroundColor="gray.500" borderRadius={6} mt={4} w={100} h={100} ml={1} alignItems="center" justifyContent="center">
                 <AntDesign
                     name="plus"
@@ -160,7 +160,7 @@ return (
         </HStack>
 
 
-        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Sobre o Produto</Text>
+        <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Sobre o Produto</Text>
         <Input w={325} mt={2} placeholder="Título do anúncio"/>
         <TextArea autoCompleteType={undefined} 
         backgroundColor="gray.700" 
@@ -183,7 +183,7 @@ return (
         </HStack>
         </Radio.Group>
 
-        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Venda</Text>
+        <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Venda</Text>
 
         <Input
         w={325} 
@@ -194,8 +194,23 @@ return (
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
         <Switch size="lg" mr={80} colorScheme="purple"/>
 
-
-
+        <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
+        <Checkbox value={"boleto"} color={"blue.200"} mt={4}>
+            Boleto
+        </Checkbox>
+        <Checkbox value={"pix"} color={"blue.200"} mt={2}>
+            Pix
+        </Checkbox>
+        <Checkbox value={"dinheiro"} color={"blue.200"} mt={2}>
+            Dinheiro
+        </Checkbox>
+        <Checkbox value={"cartaoCredito"} color={"blue.200"} mt={2}>
+            Cartão de Crédito
+        </Checkbox>
+        <Checkbox value={"depositoBancario"} color={"blue.200"} mt={2} mb={20}>
+            Depósito Bancário
+        </Checkbox>
+        </VStack>
     </ScrollView>
 )}
 
