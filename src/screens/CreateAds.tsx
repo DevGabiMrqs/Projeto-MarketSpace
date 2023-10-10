@@ -15,6 +15,20 @@ import { AppError } from "../utils/AppError";
 import { Input } from "../components/Input";
 import { api } from "../services/api";
 import { PaymentMethods } from "../components/PaymentMethods";
+import { number } from "yup";
+
+
+type productProps = {
+    name: string;
+    description: string;
+    is_new: string;
+    price: number;
+    accept_trade: string;
+    payment_methods: [
+
+    ]
+
+}
 
 type FormDataPropss = {
     product_id: string;
@@ -28,7 +42,7 @@ const navigation = useNavigation<AppNavigatorRoutesProp>();
 const [avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult)
 const [photoIsLoading, setPhotoIsLoading] = useState(false)
 const [productPhoto, setProductPhoto] = useState<ImagePickerSuccessResult[]>([]);
-//const [value, setValue] = useState();
+const [titleProduct, setTitleProduct] = useState("");
 
 const toast = useToast();
 
@@ -109,7 +123,6 @@ try {
 //     } catch (error) {
     
 //     }
- 
 
 async function createNewAds() {
     //enviar imagem, título, descrição, valor
@@ -137,15 +150,7 @@ return (
         <HStack>
 
         {productPhoto.map((photo, index) => (
-        <Image 
-        borderRadius={6} 
-        mt={4} 
-        w={100} 
-        h={100}
-        ml={1}
-        source={{ uri: photo.assets[0].uri }} 
-        alt={`Foto ${index}`}
-        />
+        <Image borderRadius={6} mt={4} w={100} h={100} ml={1} source={{ uri: photo.assets[0].uri }} alt={`Foto ${index}`}/>
         ))}
         {productPhoto.length < 3 && (
             <TouchableOpacity onPress={handleProductPhoto}>
@@ -155,14 +160,19 @@ return (
                     size={26}
                     color="gray" />
             </Stack>
-        </TouchableOpacity>
+            </TouchableOpacity>
         )}
         </HStack>
 
-
         <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Sobre o Produto</Text>
-        <Input w={325} mt={2} placeholder="Título do anúncio"/>
-        <TextArea autoCompleteType={undefined} 
+        <Input 
+        w={325} 
+        mt={2} 
+        placeholder="Título do anúncio"
+        onChange={(e) => setTitleProduct(titleProduct)}       
+        />
+        <TextArea 
+        autoCompleteType={undefined} 
         backgroundColor="gray.700" 
         borderRadius={6} 
         borderColor="gray.700"
@@ -192,7 +202,11 @@ return (
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
-        <Switch size="lg" mr={80} colorScheme="purple"/>
+        <Switch 
+        size="lg" 
+        mr={80} 
+        colorScheme="purple"
+        />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
         <Checkbox value={"boleto"} color={"blue.200"} mt={4}>
