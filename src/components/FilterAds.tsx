@@ -1,6 +1,6 @@
 import React from "react";
 import { Actionsheet, VStack, Text, useDisclose, Button, Switch, Checkbox, HStack } from "native-base";
-import { ButtonMadeUp } from "../components/Button";
+import { ButtonMadeUp } from "./ButtonMadeUp";
 
 
 

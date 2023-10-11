@@ -15,7 +15,7 @@ import * as yup from "yup";
 import LogoSvg from "../assets/Logo.svg"
 import {Photo} from "../components/Photo"
 import { Input } from "../components/Input";
-import { ButtonMadeUp } from "../components/Button";
+import { ButtonMadeUp } from "../components/ButtonMadeUp";
 import { api } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 import { AppError } from "../utils/AppError";

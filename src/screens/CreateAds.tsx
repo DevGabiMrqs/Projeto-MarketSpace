@@ -15,7 +15,10 @@ import { AppError } from "../utils/AppError";
 import { Input } from "../components/Input";
 import { api } from "../services/api";
 import { PaymentMethods } from "../components/PaymentMethods";
-import { number } from "yup";
+import * as yup from "yup";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ButtonMadeUp } from "../components/ButtonMadeUp";
 
 
 type productProps = {
@@ -24,17 +27,22 @@ type productProps = {
     is_new: string;
     price: number;
     accept_trade: string;
-    payment_methods: [
-
-    ]
-
+    payment_methods: string[]
 }
+
+const createAdsSchema = yup.object({
+    name: yup.string().required("Informe o título do anúncio."),
+    description: yup.string().required("Informe a descrição do produto."),
+    is_new: yup.string().required("Informe se o produto é novo ou usado."),
+    price: yup.string().required("Informe o valor do produto."),
+    accept_trade: yup.string().required("Informe se aceita troca ou não."),
+    payment_methods: yup.string().required("Informe um ou mais métodos de pagamento.")
+})
 
 type FormDataPropss = {
     product_id: string;
     avatar: string;
 }
-
 
 export function CreateAds() {
 
@@ -42,7 +50,10 @@ const navigation = useNavigation<AppNavigatorRoutesProp>();
 const [avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult)
 const [photoIsLoading, setPhotoIsLoading] = useState(false)
 const [productPhoto, setProductPhoto] = useState<ImagePickerSuccessResult[]>([]);
-const [titleProduct, setTitleProduct] = useState("");
+
+const { control, handleSubmit, formState : errors } = useForm<productProps>({
+    resolver: yupResolver(createAdsSchema)
+})
 
 const toast = useToast();
 
@@ -78,7 +89,6 @@ try {
                      bgColor: "red.600"
                 })
             }
-
             setProductPhoto((prevPhotos) => [...prevPhotos, photoSelected]);
         }
 
@@ -91,8 +101,8 @@ try {
         const title = isAppError ? error.message : "Não foi possível carregar a foto"
 
         toast.show({
-             title,
-             placement: "top",
+            title,
+            placement: "top",
         })    
     }
 } 
@@ -165,12 +175,21 @@ return (
         </HStack>
 
         <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Sobre o Produto</Text>
-        <Input 
-        w={325} 
-        mt={2} 
-        placeholder="Título do anúncio"
-        onChange={(e) => setTitleProduct(titleProduct)}       
-        />
+
+        <Controller
+        control={control}
+        name="name"
+        render={({field: {onChange, value} }) => (
+            <Input 
+            w={325} 
+            mt={2} 
+            placeholder="Título do anúncio"
+            onChange={onChange}
+            value={value}
+            />
+        )}
+        />    
+
         <TextArea 
         autoCompleteType={undefined} 
         backgroundColor="gray.700" 
@@ -221,9 +240,27 @@ return (
         <Checkbox value={"cartaoCredito"} color={"blue.200"} mt={2}>
             Cartão de Crédito
         </Checkbox>
-        <Checkbox value={"depositoBancario"} color={"blue.200"} mt={2} mb={20}>
+        <Checkbox value={"depositoBancario"} color={"blue.200"} mt={2} >
             Depósito Bancário
         </Checkbox>
+
+        <HStack mt={6} mb={16}>
+            <ButtonMadeUp 
+            title={"Cancelar"} 
+            w={40} 
+            variante={"gray.500"} 
+            colors={"gray.200"}
+            />
+
+            <ButtonMadeUp 
+            title={"Avançar"}
+            w={40} 
+            variante={"gray.100"} 
+            colors={"gray.700"} 
+            ml={2}
+            />
+        </HStack>
+
         </VStack>
     </ScrollView>
 )}

@@ -10,7 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 import { CardActiveAds } from "../components/CardActiveAds";
 import { Input } from "../components/Input";
 import { AdsImages } from "../components/AdsImages";
-import { ButtonMadeUp } from "../components/Button";
+import { ButtonMadeUp } from "../components/ButtonMadeUp";
 import { color } from "native-base/lib/typescript/theme/styled-system";
 import { CreateAds } from "./CreateAds";
 import { AppNavigatorRoutesProp } from "src/routes/app.routes";

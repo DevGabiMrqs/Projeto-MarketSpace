@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import LogoSvg from "../assets/Logo.svg";
 import { Input } from "../components/Input";
-import { ButtonMadeUp } from "../components/Button";
+import { ButtonMadeUp } from "../components/ButtonMadeUp";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProp, AuthRoutes } from "../routes/auth.routes";
 import { useAuth } from "../hooks/useAuth";
