@@ -25,9 +25,9 @@ type productProps = {
     name: string;
     description: string;
     is_new: string;
-    price: number;
+    price: string;
     accept_trade: string;
-    payment_methods: string[]
+    payment_methods: string;
 }
 
 const createAdsSchema = yup.object({
@@ -39,10 +39,6 @@ const createAdsSchema = yup.object({
     payment_methods: yup.string().required("Informe um ou mais métodos de pagamento.")
 })
 
-type FormDataPropss = {
-    product_id: string;
-    avatar: string;
-}
 
 export function CreateAds() {
 
@@ -106,36 +102,48 @@ try {
         })    
     }
 } 
-// async function showProductPhoto() {
 
-//     try {
+async function createAd({name, description, is_new, price, accept_trade, payment_methods}:productProps){
 
-//     const fileExtension = avatar.assets[0].uri.split('.').pop();
+    try {
 
-//     const photoFile = {
-//         name:`${fileExtension}`.toLocaleLowerCase(),
-//         uri: avatar.assets[0].uri,
-//         type: `${avatar.assets[0].uri}/${fileExtension}`
-//     } as any;
+    const fileExtension = avatar.assets[0].uri.split('.').pop();
 
-//     const formData = new FormData()
+    const photoFile = {
+        name:`${fileExtension}`.toLocaleLowerCase(),
+        uri: avatar.assets[0].uri,
+        type: `${avatar.assets[0].uri}/${fileExtension}`
+    } as any;
 
-//     formData.append("avatar", photoFile)
+    const formData = new FormData()
 
-//     const headers = {
-//         "Content-type": "multipart/form-data"
-//     }
+    formData.append("avatar", photoFile),
+    formData.append("name", name),
+    formData.append("description", description),
+    formData.append("is_new", is_new),
+    formData.append("price", price),
+    formData.append("accept_trade", accept_trade),
+    formData.append("payment_methods", payment_methods)
 
-//     const response = await api.post("/products/images", formData, {headers})
-//     console.log(response)
+    const headers = {
+        "Content-type": "multipart/form-data"
+    }
+
+    const response = await api.post("/products", formData, {headers})
+    console.log(response.data)
     
     
-//     } catch (error) {
-    
-//     }
+    } catch (error) {
 
-async function createNewAds() {
-    //enviar imagem, título, descrição, valor
+        const isAppError = error instanceof AppError;
+        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde"
+        
+        toast.show({
+            title,
+            placement: "top",
+            bgColor: "red.100"
+        })
+    }
 }
 
 return (
@@ -213,17 +221,18 @@ return (
         </Radio.Group>
 
         <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Venda</Text>
-
         <Input
         w={325} 
         mt={2}
-        placeholder="Valor do Produto"
+        placeholder="R$ Valor do Produto"
+        keyboardType={"numeric"}
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
         <Switch 
         size="lg" 
-        mr={80} 
+        mr={80}
+        ml={16} 
         colorScheme="purple"
         />
 
@@ -252,7 +261,8 @@ return (
             colors={"gray.200"}
             />
 
-            <ButtonMadeUp 
+            <ButtonMadeUp
+            onPress={handleSubmit(createAd)}
             title={"Avançar"}
             w={40} 
             variante={"gray.100"} 
