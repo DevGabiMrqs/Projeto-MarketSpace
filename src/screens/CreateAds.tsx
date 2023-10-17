@@ -91,6 +91,8 @@ try {
          setAvatar(photoSelected);
 
     } catch (error) {
+
+        setPhotoIsLoading(false)
          
         const isAppError = error instanceof AppError;
         setPhotoIsLoading(false)
@@ -106,6 +108,8 @@ try {
 async function createAd({name, description, is_new, price, accept_trade, payment_methods}:productProps){
 
     try {
+
+    setPhotoIsLoading(true)
 
     const fileExtension = avatar.assets[0].uri.split('.').pop();
 
@@ -131,9 +135,13 @@ async function createAd({name, description, is_new, price, accept_trade, payment
 
     const response = await api.post("/products", formData, {headers})
     console.log(response.data)
+    console.log("teste");
+    
     
     
     } catch (error) {
+
+        setPhotoIsLoading(false)
 
         const isAppError = error instanceof AppError;
         const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde"
@@ -158,17 +166,24 @@ return (
                 </Text>
             </HStack>
 
-            <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Imagens</Text>
-            <Text mt={2} fontFamily="body" fontSize={14} color={"gray.100"}>
+            <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Imagens</Text>
+            <Text mt={2} fontFamily="body" fontSize={14} color="gray.100">
                 Escolha até 3 imagens para mostrar o quanto seu 
                 produto é incrível!
             </Text>
 
-
         <HStack>
 
         {productPhoto.map((photo, index) => (
-        <Image borderRadius={6} mt={4} w={100} h={100} ml={1} source={{ uri: photo.assets[0].uri }} alt={`Foto ${index}`}/>
+        <Image
+        key={index} 
+        borderRadius={6} 
+        mt={4} 
+        w={100} 
+        h={100} 
+        ml={1} 
+        source={{ uri: photo.assets[0].uri }} 
+        alt={`Foto ${index}`}/>
         ))}
         {productPhoto.length < 3 && (
             <TouchableOpacity onPress={handleProductPhoto}>
@@ -182,7 +197,7 @@ return (
         )}
         </HStack>
 
-        <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Sobre o Produto</Text>
+        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Sobre o Produto</Text>
 
         <Controller
         control={control}
@@ -220,7 +235,7 @@ return (
         </HStack>
         </Radio.Group>
 
-        <Text mt={6} fontFamily="heading" color={"gray.100"} fontSize={16}>Venda</Text>
+        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Venda</Text>
         <Input
         w={325} 
         mt={2}
@@ -229,11 +244,9 @@ return (
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
-        <Switch 
-        size="lg" 
-        mr={80}
-        ml={16} 
-        colorScheme="purple"
+        <Switch
+        mr={72}
+        size={"lg"}
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
@@ -255,20 +268,19 @@ return (
 
         <HStack mt={6} mb={16}>
             <ButtonMadeUp 
-            title={"Cancelar"} 
+            title="Cancelar" 
             w={40} 
-            variante={"gray.500"} 
-            colors={"gray.200"}
+            variante="gray.500"
+            colors="gray.200"
             />
 
             <ButtonMadeUp
             onPress={handleSubmit(createAd)}
-            title={"Avançar"}
+            title="Avançar"
             w={40} 
-            variante={"gray.100"} 
-            colors={"gray.700"} 
-            ml={2}
-            />
+            variante="gray.100"
+            colors="gray.700" 
+            ml={2}/>
         </HStack>
 
         </VStack>
