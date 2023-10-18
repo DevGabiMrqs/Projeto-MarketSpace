@@ -211,60 +211,153 @@ return (
             value={value}
             />
         )}
-        />    
-
-        <TextArea 
-        autoCompleteType={undefined} 
-        backgroundColor="gray.700" 
-        borderRadius={6} 
-        borderColor="gray.700"
-        placeholder="Descrição do produto"
-        fontSize={16}
-        placeholderTextColor="gray.400"
-        mr={8}
         />
 
-        <Radio.Group name={""} isDisabled>
-        <HStack mt={4}>  
+        <Controller
+        control={control}
+        name="description"
+        render={({ field: {onChange, value} }) => (
+            <TextArea 
+            autoCompleteType={undefined} 
+            backgroundColor="gray.700" 
+            borderRadius={6} 
+            borderColor="gray.700"
+            placeholder="Descrição do produto"
+            fontSize={16}
+            placeholderTextColor="gray.400"
+            mr={8}
+            onChange={onChange}
+            value={value}
+            />
+        )}
+        />
+
+
+        <Controller 
+        control={control} 
+        name="is_new"
+        render={({field: { onChange, value } }) => (
+            <HStack mt={4}>
+            <Radio.Group 
+            name={""} 
+            isDisabled 
+            onChange={onChange} 
+            value={value}>
             <Radio value="newProduct" colorScheme="purple">
                 Produto Novo
             </Radio>
             <Radio value="oldProduct" ml={6} colorScheme="purple">
                 Produto Usado
             </Radio>
-        </HStack>
-        </Radio.Group>
+            </Radio.Group>
+            </HStack>
+        )}
+        />
 
         <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Venda</Text>
-        <Input
-        w={325} 
-        mt={2}
-        placeholder="R$ Valor do Produto"
-        keyboardType={"numeric"}
+        <Controller
+        control={control}
+        name="price"
+        render={({ field: {onChange, value} }) => (
+            <Input
+            w={325} 
+            mt={2}
+            placeholder="R$ Valor do Produto"
+            keyboardType={"numeric"}
+            onChange={onChange}
+            value={value}
+            />
+        )}
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
-        <Switch
-        mr={72}
-        size={"lg"}
+        <Controller
+        control={control}
+        name="accept_trade"
+        render={({ field: { onChange } }) => (
+            <Switch
+            mr={72}
+            size={"lg"}
+            onChange={onChange}
+            />
+        )}
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
-        <Checkbox value={"boleto"} color={"blue.200"} mt={4}>
+        <Controller 
+        control={control}
+        name="payment_methods"
+        render={({ field: { onChange, value } }) => (
+            <Checkbox
+            onChange={onChange} 
+            value={value} 
+            color={"blue.200"} 
+            mt={4}
+            >
             Boleto
-        </Checkbox>
-        <Checkbox value={"pix"} color={"blue.200"} mt={2}>
+            </Checkbox>
+        )}
+        />
+
+        <Controller
+        control={control}
+        name="payment_methods"
+        render={({ field: { onChange, value } }) => (
+            <Checkbox 
+            onChange={onChange}
+            value={value} 
+            color={"blue.200"} 
+            mt={2}
+            >
             Pix
-        </Checkbox>
-        <Checkbox value={"dinheiro"} color={"blue.200"} mt={2}>
+            </Checkbox>
+        )}
+        />
+
+        <Controller
+        control={control}
+        name="payment_methods"
+        render={({ field: { onChange, value } }) => (
+            <Checkbox 
+            onChange={onChange}
+            value={value} 
+            color={"blue.200"} 
+            mt={2}
+            >
             Dinheiro
-        </Checkbox>
-        <Checkbox value={"cartaoCredito"} color={"blue.200"} mt={2}>
-            Cartão de Crédito
-        </Checkbox>
-        <Checkbox value={"depositoBancario"} color={"blue.200"} mt={2} >
-            Depósito Bancário
-        </Checkbox>
+            </Checkbox>
+        )}
+        />
+
+        <Controller
+        control={control}
+        name="payment_methods"
+        render={({ field: { onChange, value } }) => (
+            <Checkbox 
+            onChange={onChange}
+            value={value} 
+            color={"blue.200"} 
+            mt={2}
+            >
+            Cartão de crédito
+            </Checkbox>
+        )}
+        />
+
+        <Controller
+        control={control}
+        name="payment_methods"
+        render={({ field: { onChange, value } }) => (
+            <Checkbox 
+            onChange={onChange}
+            value={value} 
+            color={"blue.200"} 
+            mt={2}
+            >
+            Depósito bancário
+            </Checkbox>
+        )}
+        />          
 
         <HStack mt={6} mb={16}>
             <ButtonMadeUp 
