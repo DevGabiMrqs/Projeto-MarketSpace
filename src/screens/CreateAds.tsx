@@ -130,6 +130,7 @@ async function createAd({name, description, is_new, price, accept_trade, payment
     formData.append("payment_methods", payment_methods)
 
     const headers = {
+        // "Authorization":""
         "Content-type": "multipart/form-data"
     }
 
@@ -222,7 +223,7 @@ return (
             backgroundColor="gray.700" 
             borderRadius={6} 
             borderColor="gray.700"
-            placeholder="Descrição do produto"
+            placeholder="Descrição do produtoo"
             fontSize={16}
             placeholderTextColor="gray.400"
             mr={8}
@@ -242,11 +243,11 @@ return (
             name={""} 
             isDisabled 
             onChange={onChange} 
-            value={value}>
-            <Radio value="newProduct" colorScheme="purple">
+            value={value ? "true" : "false"}>
+            <Radio value={"true"} colorScheme="purple">
                 Produto Novo
             </Radio>
-            <Radio value="oldProduct" ml={6} colorScheme="purple">
+            <Radio value={"false"} ml={6} colorScheme="purple">
                 Produto Usado
             </Radio>
             </Radio.Group>
@@ -284,20 +285,26 @@ return (
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
-        <Controller 
+        {/* <Controller 
         control={control}
         name="payment_methods"
         render={({ field: { onChange, value } }) => (
             <Checkbox
-            onChange={onChange} 
-            value={value} 
+            onChange={(e) => {
+                if(e.target.checked) {
+                    onChange([...value, "Boleto"]);
+                } else {
+                    onChange(value.filter((method => method !== "Boleto"));
+                }
+            }}
+            isChecked={value.includes("Boleto")}
             color={"blue.200"} 
             mt={4}
             >
             Boleto
             </Checkbox>
         )}
-        />
+        /> */}
 
         <Controller
         control={control}
