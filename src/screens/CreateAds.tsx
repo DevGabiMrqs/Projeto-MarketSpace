@@ -309,10 +309,10 @@ return (
         <Controller
         control={control}
         name="payment_methods"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange} }) => (
             <Checkbox 
             onChange={onChange}
-            value={value} 
+            value="pix" 
             color={"blue.200"} 
             mt={2}
             >
