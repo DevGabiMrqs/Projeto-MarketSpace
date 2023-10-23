@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox } from "native-base";
-import { SwitchBase, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
+import * as yup from "yup";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { FileInfo } from "expo-file-system";
 import { ImagePickerSuccessResult } from "expo-image-picker";
+import { Controller, useForm } from "react-hook-form";
 
 import { AntDesign } from '@expo/vector-icons'; 
 import { useNavigation } from "@react-navigation/native";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { AppNavigatorRoutesProp } from "../routes/app.routes";
 import { AppError } from "../utils/AppError";
 import { Input } from "../components/Input";
 import { api } from "../services/api";
-import { PaymentMethods } from "../components/PaymentMethods";
-import * as yup from "yup";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ButtonMadeUp } from "../components/ButtonMadeUp";
 
 
@@ -32,13 +31,9 @@ type productProps = {
 
 const createAdsSchema = yup.object({
     name: yup.string().required("Informe o título do anúncio."),
-    description: yup.string().required("Informe a descrição do produto."),
-    is_new: yup.string().required("Informe se o produto é novo ou usado."),
     price: yup.string().required("Informe o valor do produto."),
-    accept_trade: yup.string().required("Informe se aceita troca ou não."),
     payment_methods: yup.string().required("Informe um ou mais métodos de pagamento.")
 })
-
 
 export function CreateAds() {
 
@@ -46,12 +41,10 @@ const navigation = useNavigation<AppNavigatorRoutesProp>();
 const [avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult)
 const [photoIsLoading, setPhotoIsLoading] = useState(false)
 const [productPhoto, setProductPhoto] = useState<ImagePickerSuccessResult[]>([]);
-
-const { control, handleSubmit, formState : errors } = useForm<productProps>({
+const toast = useToast();
+const { control, handleSubmit, formState : {errors} } = useForm<productProps>({
     resolver: yupResolver(createAdsSchema)
 })
-
-const toast = useToast();
 
 function goBackToHome()  {
     navigation.goBack()
@@ -103,14 +96,18 @@ try {
             placement: "top",
         })    
     }
-} 
+}
 
-async function createAd({name, description, is_new, price, accept_trade, payment_methods}:productProps){
 
-    try {
+
+async function sendProductImage() {
 
     setPhotoIsLoading(true)
 
+    try {
+        
+    const formData = new FormData();
+        
     const fileExtension = avatar.assets[0].uri.split('.').pop();
 
     const photoFile = {
@@ -119,9 +116,33 @@ async function createAd({name, description, is_new, price, accept_trade, payment
         type: `${avatar.assets[0].uri}/${fileExtension}`
     } as any;
 
+    formData.append("avatar", photoFile);
+
+    } catch (error) {
+        
+        setPhotoIsLoading(false)
+
+        const isAppError = error instanceof AppError;
+        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde."
+        
+        
+        toast.show({
+            title,
+            placement: "top",
+            bgColor: "red.100"
+        })
+    }
+    
+}
+
+async function createAd({name, description, is_new, price, accept_trade, payment_methods}:productProps){
+
+    try {
+
+    setPhotoIsLoading(true)
+
     const formData = new FormData()
 
-    formData.append("avatar", photoFile),
     formData.append("name", name),
     formData.append("description", description),
     formData.append("is_new", is_new),
@@ -145,7 +166,8 @@ async function createAd({name, description, is_new, price, accept_trade, payment
         setPhotoIsLoading(false)
 
         const isAppError = error instanceof AppError;
-        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde"
+        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde."
+        
         
         toast.show({
             title,
@@ -208,8 +230,9 @@ return (
             w={325} 
             mt={2} 
             placeholder="Título do anúncio"
-            onChange={onChange}
+            onChangeText={onChange}
             value={value}
+            errorMessage={errors.name?.message}
             />
         )}
         />
@@ -221,37 +244,36 @@ return (
             <TextArea 
             autoCompleteType={undefined} 
             backgroundColor="gray.700" 
-            borderRadius={6} 
-            borderColor="gray.700"
+            borderRadius={6}
+            borderWidth={"0"}
             placeholder="Descrição do produtoo"
             fontSize={16}
             placeholderTextColor="gray.400"
             mr={8}
-            onChange={onChange}
+            onChangeText={onChange}
             value={value}
             />
         )}
         />
 
-
         <Controller 
         control={control} 
         name="is_new"
         render={({field: { onChange, value } }) => (
-            <HStack mt={4}>
             <Radio.Group 
             name={""} 
             isDisabled 
             onChange={onChange} 
             value={value ? "true" : "false"}>
+            <HStack mt={4}>
             <Radio value={"true"} colorScheme="purple">
                 Produto Novo
             </Radio>
-            <Radio value={"false"} ml={6} colorScheme="purple">
+            <Radio value={"false"} ml={10} colorScheme="purple">
                 Produto Usado
             </Radio>
-            </Radio.Group>
             </HStack>
+            </Radio.Group>
         )}
         />
 
@@ -265,8 +287,9 @@ return (
             mt={2}
             placeholder="R$ Valor do Produto"
             keyboardType={"numeric"}
-            onChange={onChange}
+            onChangeText={onChange}
             value={value}
+            errorMessage={errors.price?.message}
             />
         )}
         />
@@ -279,32 +302,26 @@ return (
             <Switch
             mr={72}
             size={"lg"}
-            onChange={onChange}
+            onValueChange={onChange}
             />
         )}
         />
 
         <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
-        {/* <Controller 
+        <Controller 
         control={control}
         name="payment_methods"
         render={({ field: { onChange, value } }) => (
             <Checkbox
-            onChange={(e) => {
-                if(e.target.checked) {
-                    onChange([...value, "Boleto"]);
-                } else {
-                    onChange(value.filter((method => method !== "Boleto"));
-                }
-            }}
-            isChecked={value.includes("Boleto")}
+            onChange={onChange}
+            value="boleto"
             color={"blue.200"} 
             mt={4}
             >
             Boleto
             </Checkbox>
         )}
-        /> */}
+        />
 
         <Controller
         control={control}
@@ -324,10 +341,10 @@ return (
         <Controller
         control={control}
         name="payment_methods"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value={value} 
+            value="dinheiro" 
             color={"blue.200"} 
             mt={2}
             >
@@ -339,10 +356,10 @@ return (
         <Controller
         control={control}
         name="payment_methods"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value={value} 
+            value="cartaoCredito"
             color={"blue.200"} 
             mt={2}
             >
@@ -354,10 +371,10 @@ return (
         <Controller
         control={control}
         name="payment_methods"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value={value} 
+            value="depositoBancario" 
             color={"blue.200"} 
             mt={2}
             >
