@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox } from "native-base";
+import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox, View } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import * as yup from "yup";
@@ -18,15 +18,20 @@ import { AppError } from "../utils/AppError";
 import { Input } from "../components/Input";
 import { api } from "../services/api";
 import { ButtonMadeUp } from "../components/ButtonMadeUp";
+import { THEME } from "../theme/index";
 
-
-type productProps = {
+type ProductProps = {
     name: string;
     description: string;
     is_new: string;
     price: string;
     accept_trade: string;
     payment_methods: string;
+}
+
+type ProductPhotoProps = {
+    path: string;
+    product_id: string;
 }
 
 const createAdsSchema = yup.object({
@@ -38,16 +43,22 @@ const createAdsSchema = yup.object({
 export function CreateAds() {
 
 const navigation = useNavigation<AppNavigatorRoutesProp>();
-const [avatar, setAvatar] = useState<ImagePickerSuccessResult>({} as ImagePickerSuccessResult)
 const [photoIsLoading, setPhotoIsLoading] = useState(false)
+const [photoFile, setPhotoFile] = useState<ImagePickerSuccessResult | null>(null);
 const [productPhoto, setProductPhoto] = useState<ImagePickerSuccessResult[]>([]);
 const toast = useToast();
-const { control, handleSubmit, formState : {errors} } = useForm<productProps>({
+const { control, handleSubmit, reset, formState : {errors} } = useForm<ProductProps>({
     resolver: yupResolver(createAdsSchema)
 })
 
+const handleCancel = () => { 
+    reset();
+    setProductPhoto([]);
+};
+
+
 function goBackToHome()  {
-    navigation.goBack()
+    navigation.goBack() 
 }
 
 async function handleProductPhoto(){
@@ -81,14 +92,13 @@ try {
             setProductPhoto((prevPhotos) => [...prevPhotos, photoSelected]);
         }
 
-         setAvatar(photoSelected);
+         setPhotoFile(photoSelected);
 
     } catch (error) {
 
         setPhotoIsLoading(false)
          
         const isAppError = error instanceof AppError;
-        setPhotoIsLoading(false)
         const title = isAppError ? error.message : "Não foi possível carregar a foto"
 
         toast.show({
@@ -100,23 +110,33 @@ try {
 
 
 
-async function sendProductImage() {
+async function sendProductImage({path, product_id}: ProductPhotoProps) {
 
     setPhotoIsLoading(true)
 
     try {
         
-    const formData = new FormData();
-        
-    const fileExtension = avatar.assets[0].uri.split('.').pop();
-
-    const photoFile = {
+    const fileExtension = photoFile?.assets[0].uri.split('.').pop() || " ";
+   
+     
+    const photoFilefile = {
         name:`${fileExtension}`.toLocaleLowerCase(),
-        uri: avatar.assets[0].uri,
-        type: `${avatar.assets[0].uri}/${fileExtension}`
+        uri: productPhoto[0]?.assets[0].uri,
+        type: `image/${fileExtension}`
     } as any;
+        
+    const formData = new FormData();
+    formData.append("path", photoFilefile[0]?.assets[0].uri || " " );
+    formData.append("product_id", product_id);
 
-    formData.append("avatar", photoFile);
+
+    const headers = {
+        "Content-Type": "multipart/form-data"
+    }
+
+    const response = await api.post("/products/images/", formData, { headers })
+    console.log(response.data)
+
 
     } catch (error) {
         
@@ -135,7 +155,7 @@ async function sendProductImage() {
     
 }
 
-async function createAd({name, description, is_new, price, accept_trade, payment_methods}:productProps){
+async function createAd({name, description, is_new, price, accept_trade, payment_methods}:ProductProps){
 
     try {
 
@@ -143,19 +163,20 @@ async function createAd({name, description, is_new, price, accept_trade, payment
 
     const formData = new FormData()
 
-    formData.append("name", name),
-    formData.append("description", description),
-    formData.append("is_new", is_new),
-    formData.append("price", price),
-    formData.append("accept_trade", accept_trade),
-    formData.append("payment_methods", payment_methods)
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("is_new", is_new);
+    formData.append("price", price);
+    formData.append("accept_trade", accept_trade);
+    formData.append("payment_methods", payment_methods);
 
     const headers = {
-        // "Authorization":""
-        "Content-type": "multipart/form-data"
+
+        "Content-Type": "multipart/form-data"
     }
 
     const response = await api.post("/products", formData, {headers})
+    await sendProductImage({path: photoFile?.assets[0].uri || " ", product_id: response.data.id})
     console.log(response.data)
     console.log("teste");
     
@@ -166,7 +187,7 @@ async function createAd({name, description, is_new, price, accept_trade, payment
         setPhotoIsLoading(false)
 
         const isAppError = error instanceof AppError;
-        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde."
+        const title = isAppError? error.message :"Não foi possível criar o anúncio tente novamente mais tarde!!!"
         
         
         toast.show({
@@ -182,35 +203,38 @@ return (
         <VStack>
             <HStack>
                 <TouchableOpacity onPress={goBackToHome}>
-                    <AntDesign name="arrowleft" size={26} color="gray.100" />
+                    <AntDesign name="arrowleft" size={26} color={THEME.colors.gray[100]} />
                 </TouchableOpacity>
                 <Text ml={20} fontSize={20} fontFamily="heading">
                     Criar anúncio
                 </Text>
             </HStack>
 
-            <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Imagens</Text>
-            <Text mt={2} fontFamily="body" fontSize={14} color="gray.100">
+            <Text mt={6} fontFamily="heading" color={THEME.colors.gray[100]} fontSize={16}>Imagens</Text>
+            <Text mt={2} fontFamily="body" fontSize={14} color={THEME.colors.gray[100]}>
                 Escolha até 3 imagens para mostrar o quanto seu 
                 produto é incrível!
             </Text>
 
         <HStack>
 
+        <HStack>
         {productPhoto.map((photo, index) => (
-        <Image
-        key={index} 
-        borderRadius={6} 
-        mt={4} 
-        w={100} 
-        h={100} 
-        ml={1} 
-        source={{ uri: photo.assets[0].uri }} 
-        alt={`Foto ${index}`}/>
-        ))}
+            <Image
+            key={index} 
+            borderRadius={6} 
+            mt={2} 
+            w={100} 
+            h={100} 
+            ml={1} 
+            source={{ uri: photo.assets[0].uri }} 
+            alt={`Foto ${index}`}
+            />
+            ))}
+        </HStack>
         {productPhoto.length < 3 && (
             <TouchableOpacity onPress={handleProductPhoto}>
-            <Stack backgroundColor="gray.500" borderRadius={6} mt={4} w={100} h={100} ml={1} alignItems="center" justifyContent="center">
+            <Stack backgroundColor="gray.500" borderRadius={6} mt={2} w={100} h={100} ml={2} alignItems="center" justifyContent="center">
                 <AntDesign
                     name="plus"
                     size={26}
@@ -220,7 +244,7 @@ return (
         )}
         </HStack>
 
-        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Sobre o Produto</Text>
+        <Text mt={6} fontFamily="heading" color={THEME.colors.gray[100]} fontSize={16}>Sobre o Produto</Text>
 
         <Controller
         control={control}
@@ -277,7 +301,7 @@ return (
         )}
         />
 
-        <Text mt={6} fontFamily="heading" color="gray.100" fontSize={16}>Venda</Text>
+        <Text mt={6} fontFamily="heading" color={THEME.colors.gray[100]} fontSize={16}>Venda</Text>
         <Controller
         control={control}
         name="price"
@@ -294,7 +318,7 @@ return (
         )}
         />
 
-        <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Aceita Troca?</Text>
+        <Text mt={4} fontFamily="heading" color={THEME.colors.gray[100]} fontSize={16}>Aceita Troca?</Text>
         <Controller
         control={control}
         name="accept_trade"
@@ -307,7 +331,7 @@ return (
         )}
         />
 
-        <Text mt={4} fontFamily="heading" color="gray.100" fontSize={16}>Meios de pagamento aceitos</Text>
+        <Text mt={4} fontFamily="heading" color={THEME.colors.gray[100]} fontSize={16}>Meios de pagamento aceitos</Text>
         <Controller 
         control={control}
         name="payment_methods"
@@ -389,6 +413,7 @@ return (
             w={40} 
             variante="gray.500"
             colors="gray.200"
+            //onPress={handleCancel()}
             />
 
             <ButtonMadeUp

@@ -108,9 +108,9 @@ export function Home() {
                         <Feather name="x" size={24} color="gray.400" onPress={onClose}/>
                     </HStack>
 
-                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} my={3}>Condição</Text>
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} my={3}>Condições:</Text>
                     <HStack pb={6}>
-                        <ButtonMadeUp borderRadius={50} mr={2} title={"NOVO"} variante={"blue.200"} colors={"gray.600"} w={20}/>
+                        <ButtonMadeUp borderRadius={50} mr={2} title={"NOVO"} variante={"gray.500"} colors={"gray.200"} w={20}/>
                         <ButtonMadeUp borderRadius={50} mr={2} title={"USADO"} variante={"gray.500"} colors={"gray.200"} w={20}/>
                     </HStack>
 
@@ -119,7 +119,7 @@ export function Home() {
                     <Switch size="lg" colorScheme="blueGray"/>
                     </Box>
 
-                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} mb={4}>Meios de pagamentos aceitos</Text>
+                    <Text color="gray.300" fontWeight={700} fontFamily="body" fontSize={14} mb={4}>Meios de pagamentos aceitos:</Text>
                     <Checkbox value="one" mb={1}>Boleto</Checkbox>
                     <Checkbox value="one" mb={1}>Pix</Checkbox>
                     <Checkbox value="one" mb={1}>Dinheiro</Checkbox>

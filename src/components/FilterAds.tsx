@@ -1,6 +1,8 @@
 import React from "react";
 import { Actionsheet, VStack, Text, useDisclose, Button, Switch, Checkbox, HStack } from "native-base";
 import { ButtonMadeUp } from "./ButtonMadeUp";
+import { TouchableOpacity } from "react-native";
+import colors from "native-base/lib/typescript/theme/base/colors";
 
 
 
@@ -16,8 +18,8 @@ export function FilterAds() {
 
                         <Text>Condições</Text>
                         <HStack>
-                            <Button>NOVO</Button>
-                            <Button>USADO</Button>
+                            <Actionsheet.Item>NOVO</Actionsheet.Item>
+                            <Actionsheet.Item>USADO</Actionsheet.Item>
                         </HStack>
 
                         <Text>Aceita troca?</Text>

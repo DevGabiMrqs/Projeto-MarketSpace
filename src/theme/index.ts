@@ -32,6 +32,12 @@ export const THEME = extendTheme({
         md: 16,
         lg: 20,
         xl: 24,
+    },
+    components: {
+        Text: {
+          baseStyle: {
+            color: '#1a181b', // Substitua pelo tom de cinza desejado
+          },
+        }
     }
-
 })
