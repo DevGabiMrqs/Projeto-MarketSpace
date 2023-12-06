@@ -21,9 +21,14 @@ export function Home() {
     const[userPhoto, setUserPhoto] = useState("https://avatars.githubusercontent.com/u/114935103?s=400&u=72ff65639ede1e9b3284095b0aef27c83d5bc145&v=4");
     const {isOpen, onOpen, onClose} = useDisclose();
     const navigation = useNavigation<AppNavigatorRoutesProp>()
+    const [searchAds, setSearchAds] = useState("");
 
     function goToCreateAds() {  
         navigation.navigate("createAds")
+    }
+
+    function HandleAdsSearch(text: string) {
+        setSearchAds(text)
     }
 
 
@@ -78,6 +83,8 @@ export function Home() {
                     w={345} 
                     mt={2}
                     placeholder="Buscar anúncio"
+                    value={searchAds}
+                    onChangeText={(text) => setSearchAds(text)}
                     />
                         <Icon
                         as={Feather}

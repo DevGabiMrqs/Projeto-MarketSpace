@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox, View } from "native-base";
+import { HStack, ScrollView, VStack, Text, useToast, Stack, TextArea, Radio, Switch, Image, Checkbox} from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import * as yup from "yup";
@@ -54,6 +54,7 @@ const { control, handleSubmit, reset, formState : {errors} } = useForm<ProductPr
 const handleCancel = () => { 
     reset();
     setProductPhoto([]);
+    setPhotoFile(null);
 };
 
 
@@ -285,10 +286,9 @@ return (
         name="is_new"
         render={({field: { onChange, value } }) => (
             <Radio.Group 
-            name={""} 
-            isDisabled 
+            name={"isNew"} 
             onChange={onChange} 
-            value={value ? "true" : "false"}>
+            value={value}>
             <HStack mt={4}>
             <Radio value={"true"} colorScheme="purple">
                 Produto Novo
@@ -322,11 +322,12 @@ return (
         <Controller
         control={control}
         name="accept_trade"
-        render={({ field: { onChange } }) => (
+        defaultValue="false"
+        render={({ field: { onChange, value } }) => (
             <Switch
             mr={72}
             size={"lg"}
-            onValueChange={onChange}
+            onValueChange={(val) => onChange(val)}
             />
         )}
         />
@@ -368,7 +369,7 @@ return (
         render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value="dinheiro" 
+            value="cash" 
             color={"blue.200"} 
             mt={2}
             >
@@ -383,7 +384,7 @@ return (
         render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value="cartaoCredito"
+            value="card"
             color={"blue.200"} 
             mt={2}
             >
@@ -398,7 +399,7 @@ return (
         render={({ field: { onChange } }) => (
             <Checkbox 
             onChange={onChange}
-            value="depositoBancario" 
+            value="deposit" 
             color={"blue.200"} 
             mt={2}
             >
@@ -413,7 +414,7 @@ return (
             w={40} 
             variante="gray.500"
             colors="gray.200"
-            //onPress={handleCancel()}
+            onPress={handleCancel}
             />
 
             <ButtonMadeUp
